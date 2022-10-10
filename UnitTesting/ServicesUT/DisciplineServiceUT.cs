@@ -16,6 +16,7 @@ namespace UnitTesting.ServicesUT
 {
     public class DisciplineServiceUT
     {
+        //GetDisciplinesAsync
         [Fact]
         public async Task GetDisciplinesAsync_ReturnsListOfDisciplines()
         {
@@ -40,8 +41,22 @@ namespace UnitTesting.ServicesUT
             Assert.NotEmpty(disciplinesList);
             Assert.Equal(2,disciplinesList.Count());
         }
+        //GetDisciplineAsync
+        //tc1
+        [Fact]
+        public async Task GetDisciplineAsync_InvalidId_ThrowsNotFoundElementException()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var repositoryMock = new Mock<IAthleteRepository>();
+            repositoryMock.Setup(r => r.GetDisciplineAsync(100, false)).ReturnsAsync((DisciplineEntity)null);
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
 
+            var exception = Assert.ThrowsAsync<NotFoundElementException>(async () => await disciplinesService.GetDisciplineAsync(100));
+            Assert.Equal("discipline with id 100 does not exist", exception.Result.Message);
 
+        }
+        //tc2
         [Fact]
         public async Task GetDisciplineAsync_ValidId_ReturnsDisciplineCorrespondingToId()
         {
@@ -61,19 +76,47 @@ namespace UnitTesting.ServicesUT
             Assert.True("100M" == disciplineFromDB.Name);
             Assert.IsType<DisciplineModel>(disciplineFromDB);
         }
-        //24.5%
+
+        //DeleteDisciplineAsync
+        //tc1
         [Fact]
-        public async Task GetDisciplineAsync_InvalidId_ThrowsNotFoundElementException()
+        public async Task DeleteDisciplineAsync_ValidId_ReuturnsDBException()
         {
             var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
             var mapper = config.CreateMapper();
+            var disciplineEntity100M = new DisciplineEntity()
+            {
+                Id = 100,
+                Name = "100M"
+            };
             var repositoryMock = new Mock<IAthleteRepository>();
-            repositoryMock.Setup(r => r.GetDisciplineAsync(100, false)).ReturnsAsync((DisciplineEntity)null);
-            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+            
+            repositoryMock.Setup(r => r.DeleteDisciplineAsync(100));
+            repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(false);
+            repositoryMock.Setup(r => r.GetDisciplineAsync(100, false)).ReturnsAsync(disciplineEntity100M);
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);            
 
-            var exception = Assert.ThrowsAsync<NotFoundElementException>(async () => await disciplinesService.GetDisciplineAsync(100));
-            Assert.Equal("discipline with id 100 does not exist", exception.Result.Message);
-
+            var exception = Assert.ThrowsAsync<Exception>(async () => await disciplinesService.DeleteDisciplineAsync(100));
+            Assert.Equal("Database Error", exception.Result.Message);
         }
+        //tc2
+        [Fact]
+        public async Task DeleteDisciplineAsync_ValidId_DeletesDisicpline()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var disciplineEntity100M = new DisciplineEntity()
+            {
+                Id = 1,
+                Name = "100M"
+            };
+            var repositoryMock = new Mock<IAthleteRepository>();
+            repositoryMock.Setup(r => r.DeleteDisciplineAsync(1));
+            repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
+            repositoryMock.Setup(r => r.GetDisciplineAsync(1, false)).ReturnsAsync(disciplineEntity100M);
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+            await disciplinesService.DeleteDisciplineAsync(1);                    
+        }
+        
     }
 }
