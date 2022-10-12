@@ -90,17 +90,91 @@ namespace UnitTesting.ControllersUT
                 Password = "nope",
                 ConfirmPassword = "n"
             };
-            var userResponseModel = new UserManagerResponse()
-            {
-                Token = "User did not create",
-                IsSuccess = false,
-            };
             var registerServiceMock = new Mock<IUserService>();
 
             //ACT
             var registerController = new AuthController(registerServiceMock.Object);
             registerController.ModelState.AddModelError("test", "modelNotValid");
             var response = await registerController.RegisterAsync(registerModel);
+            var actualStatusCode = ((BadRequestObjectResult)response.Result).StatusCode;
+
+            //ASSERT
+            Assert.Equal(400, actualStatusCode);
+        }
+
+        //CreatRoleAsync
+        //tc1
+        [Fact]
+        public async Task CreateRole_ReturnsStatusCode200()
+        {
+            //ARRANGE
+            var roleModel = new CreateRoleViewModel()
+            {
+                Name = "Admin",
+                NormalizedName = "ADMIN",
+            };
+            var userResponseModel = new UserManagerResponse()
+            {
+                Token = "Role created successfully!",
+                IsSuccess = true,
+            };
+            var registerServiceMock = new Mock<IUserService>();
+            registerServiceMock.Setup(r => r.CreateRoleAsync(roleModel)).ReturnsAsync(userResponseModel);
+
+            //ACT
+            var registerController = new AuthController(registerServiceMock.Object);
+            var response = await registerController.CreateRolenAsync(roleModel);
+            var status = response.Result as OkObjectResult;
+            var userResponse = status.Value as UserManagerResponse;
+
+            //ASSERT
+            Assert.True(userResponse.IsSuccess);
+        }
+
+        //tc2
+        [Fact]
+        public async Task CreateRole_ReturnsBadRequestResultNotSuccess()
+        {
+            //ARRANGE
+            var roleModel = new CreateRoleViewModel()
+            {
+                Name = "NoRole",
+                NormalizedName = "notNorMal",
+            };
+            var userResponseModel = new UserManagerResponse()
+            {
+                Token = "Role did not create",
+                IsSuccess = false,
+            };
+            var registerServiceMock = new Mock<IUserService>();
+            registerServiceMock.Setup(r => r.CreateRoleAsync(roleModel)).ReturnsAsync(userResponseModel);
+
+            //ACT
+            var registerController = new AuthController(registerServiceMock.Object);
+            var response = await registerController.CreateRolenAsync(roleModel);
+            var status = response.Result as BadRequestObjectResult;
+            var userResponse = status.Value as UserManagerResponse;
+
+            //ASSERT
+            Assert.False(userResponse.IsSuccess);
+        }
+
+        //tc3
+        [Fact]
+        public async Task CreateRole_ReturnsBadRequestInvalidModel()
+        {
+            //ARRANGE
+            var roleModel = new CreateRoleViewModel()
+            {
+                Name = null,
+                NormalizedName = null,
+            };
+            var registerServiceMock = new Mock<IUserService>();
+
+            //ACT
+            var registerController = new AuthController(registerServiceMock.Object);
+            registerController.ModelState.AddModelError("test", "modelNotValid");
+            var response = await registerController.CreateRolenAsync(roleModel);
             var actualStatusCode = ((BadRequestObjectResult)response.Result).StatusCode;
 
             //ASSERT
