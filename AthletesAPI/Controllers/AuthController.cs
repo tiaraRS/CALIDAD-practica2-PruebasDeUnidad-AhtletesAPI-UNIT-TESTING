@@ -22,7 +22,7 @@ namespace AthletesRestAPI.Controllers
 
         // /api/auth/userx  
         [HttpPost("User")]
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterViewModel model)
+        public async Task<ActionResult<UserManagerResponse>> RegisterAsync([FromBody] RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -38,7 +38,7 @@ namespace AthletesRestAPI.Controllers
         }
 
         [HttpPost("Role")]
-        public async Task<IActionResult> CreateRolenAsync([FromBody] CreateRoleViewModel model)
+        public async Task<ActionResult<UserManagerResponse>> CreateRolenAsync([FromBody] CreateRoleViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -55,7 +55,7 @@ namespace AthletesRestAPI.Controllers
         }
 
         [HttpPost("UserRole")]
-        public async Task<IActionResult> CreateUserRolenAsync([FromBody] CreateUserRoleViewModel model)
+        public async Task<ActionResult<UserManagerResponse>> CreateUserRolenAsync([FromBody] CreateUserRoleViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -72,7 +72,7 @@ namespace AthletesRestAPI.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel model)
+        public async Task<ActionResult<UserManagerResponse>> LoginAsync([FromBody] LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
