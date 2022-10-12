@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AthletesRestAPI.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class enableCascadeDeleting : Migration
     {
+        [ExcludeFromCodeCoverage]
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<decimal>(
@@ -15,6 +18,7 @@ namespace AthletesRestAPI.Migrations
                 oldType: "decimal(18,2)");
         }
 
+        [ExcludeFromCodeCoverage]
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<decimal>(

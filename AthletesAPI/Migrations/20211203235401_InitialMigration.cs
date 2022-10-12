@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AthletesRestAPI.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class InitialMigration : Migration
     {
+        [ExcludeFromCodeCoverage]
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -56,7 +59,7 @@ namespace AthletesRestAPI.Migrations
                 table: "Athletes",
                 column: "DisciplineId");
         }
-
+        [ExcludeFromCodeCoverage]
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

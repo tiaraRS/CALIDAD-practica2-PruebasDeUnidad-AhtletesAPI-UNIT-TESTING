@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AthletesRestAPI.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class AthletesPoints : Migration
     {
+        [ExcludeFromCodeCoverage]
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
@@ -12,7 +15,7 @@ namespace AthletesRestAPI.Migrations
                 type: "int",
                 nullable: true);
         }
-
+        [ExcludeFromCodeCoverage]
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(

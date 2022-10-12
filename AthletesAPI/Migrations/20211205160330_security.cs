@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AthletesRestAPI.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class security : Migration
     {
+        [ExcludeFromCodeCoverage]
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -191,7 +194,7 @@ namespace AthletesRestAPI.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
         }
-
+        [ExcludeFromCodeCoverage]
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
