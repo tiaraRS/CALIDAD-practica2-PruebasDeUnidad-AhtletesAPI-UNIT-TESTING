@@ -26,7 +26,7 @@ namespace AthletesRestAPI.Data.Repository
 
         public Task<DisciplineEntity> GetDisciplineAsync(int disciplineId, bool showAthletes);
         public Task<IEnumerable<DisciplineEntity>> GetDisciplinesAsync();
-        public Task UpdateDisciplineAsync(int disciplineId, DisciplineEntity discipline);
+        public Task<bool> UpdateDisciplineAsync(int disciplineId, DisciplineEntity discipline);
 
         Task<bool> SaveChangesAsync();
     }

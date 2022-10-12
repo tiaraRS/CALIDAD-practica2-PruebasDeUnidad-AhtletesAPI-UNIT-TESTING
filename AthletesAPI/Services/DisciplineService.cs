@@ -214,22 +214,26 @@ namespace AthletesRestAPI.Services
             return mark;
         }
 
-        async Task updateWorldRecord(int disciplineId,decimal worldRecord, string gender)
+        public async Task<bool> updateWorldRecord(int disciplineId,decimal worldRecord, string gender)
         {
+            bool updated = false;
             if (gender.ToLower() == "f")
             {
-                await _athleteRepository.UpdateDisciplineAsync(disciplineId, new DisciplineEntity()
+                updated = await _athleteRepository.UpdateDisciplineAsync(disciplineId, new DisciplineEntity()
                 {
                     FemaleWorldRecord = worldRecord
                 });
+
             }
             else
             {
-                await _athleteRepository.UpdateDisciplineAsync(disciplineId, new DisciplineEntity()
+                updated = await _athleteRepository.UpdateDisciplineAsync(disciplineId, new DisciplineEntity()
                 {
                     MaleWorldRecord = worldRecord
                 });
             }
+            return updated;
+
         }
 
         bool checkWorldRecord(string gender,DisciplineModel discipline, RaceInfoModel competingResults,out decimal worldRecord)

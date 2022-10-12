@@ -336,16 +336,20 @@ namespace AthletesRestAPI.Data.Repository
 
             return result;
         }
-        public async Task UpdateDisciplineAsync(int disciplineId, DisciplineEntity discipline)
+        public async Task<bool> UpdateDisciplineAsync(int disciplineId, DisciplineEntity discipline)
         {
             //_dbContext.Entry(discipline).State = EntityState.Modified;
+            bool updated = true;
             var disciplineToUpdate = await _dbContext.Disciplines.FirstOrDefaultAsync(d => d.Id == disciplineId);
+            if (disciplineToUpdate == null) updated = false;
+            
             disciplineToUpdate.Name = discipline.Name ?? disciplineToUpdate.Name;
             disciplineToUpdate.Rules = discipline.Rules ?? disciplineToUpdate.Rules;
             disciplineToUpdate.CreationDate = discipline.CreationDate ?? disciplineToUpdate.CreationDate;
             disciplineToUpdate.FemaleWorldRecord = discipline.FemaleWorldRecord ?? disciplineToUpdate.FemaleWorldRecord;
-            disciplineToUpdate.MaleWorldRecord = discipline.MaleWorldRecord ?? disciplineToUpdate.MaleWorldRecord;  
-            
+            disciplineToUpdate.MaleWorldRecord = discipline.MaleWorldRecord ?? disciplineToUpdate.MaleWorldRecord;
+             
+            return updated;
            
         }
 
