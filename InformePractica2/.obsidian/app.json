@@ -3,5 +3,11 @@
   "spellcheckLanguages": [
     "es-419",
     "en-US"
-  ]
+  ],
+  "pdfExportSettings": {
+    "pageSize": "Letter",
+    "landscape": false,
+    "margin": "0",
+    "downscalePercent": 100
+  }
 }

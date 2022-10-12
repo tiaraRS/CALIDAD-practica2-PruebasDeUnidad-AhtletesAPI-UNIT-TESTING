@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "informe.md",
+            "file": "tcKevin.md",
             "mode": "source",
             "source": false
           }
@@ -61,8 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "124372a54a738679",
@@ -78,8 +77,8 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "informe.md",
-                "collapseAll": false,
+                "file": "tcKevin.md",
+                "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
                 "showSearch": false,
@@ -95,7 +94,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "informe.md",
+                "file": "tcKevin.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,17 +117,19 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "informe.md"
+                "file": "tcKevin.md"
               }
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "active": "ae8f7f6a6a677e58",
-  "lastOpenFiles": []
+  "lastOpenFiles": [
+    "informe.md"
+  ]
 }

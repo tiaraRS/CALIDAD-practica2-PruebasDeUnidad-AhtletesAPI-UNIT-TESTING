@@ -1,11 +1,5 @@
 # Pruebas de Unidad y Cobertura de Código
 ## Índice
-1. [Objetivos](#objetivos)
-    1. [Objetivo general](#objetivo-general)
-    2. [Objetivos específicos](#objetivos-especificos)
-2. [xUnit framework](#xunit-framework)
-
-
 ## 1. Objetivos
 ### 1.1. Objetivo general 
 ### 1.2. Objetivos específicos
@@ -57,9 +51,10 @@
     Ingresar a `Herramientas > Opciones` y modificar el valor de `Integration type`
     ![[Pasted image 20221011225133.png]]
     Instalación completa.
-#### Uso y generacion de reportes
-Para obtener el reporte se debera correr todos los test por lo menos una vez, para inicializar de manera correcta las referencias a los proyectos de test. (solo necesario la primera vez).
-Para correr el analisis de cobertura ir a `Herramientas > Run Code Coverage`. Esto generara los files del reporte y los abrira en Visual Studio.
+#### Uso y generación de reportes
+Para obtener el reporte se deberá correr todos los test por lo menos una vez, para inicializar de manera correcta las referencias a los proyectos de test. (solo necesario la primera vez).
+Para correr el análisis de cobertura ir a `Herramientas > Run Code Coverage`. Esto generara los files del reporte y los abrirá en Visual Studio.
 ![[Pasted image 20221011230520.png]]
-Para ver las lineas resaltadas directamente en el IDE seleccionar `Herramientas > Toggle Code Coverage Highlighting` para activar o desactivar la opción.
+Para ver las líneas resaltadas directamente en el IDE seleccionar `Herramientas > Toggle Code Coverage Highlighting` para activar o desactivar la opción.
 ![[Pasted image 20221011230438.png]]
+guia extension 
