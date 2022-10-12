@@ -77,7 +77,6 @@ namespace AthletesRestAPI.Services
             await GetDisciplineAsync(disciplineId);
             var disciplineEntity = _mapper.Map<DisciplineEntity>(discipline);           
             await _athleteRepository.UpdateDisciplineAsync(disciplineId, disciplineEntity);
-           // return _mapper.Map<DisciplineModel>(_athleteRepository.UpdateDiscipline(disciplineId, DisciplineEntity));
 
             var result = await _athleteRepository.SaveChangesAsync();
             if (result)
