@@ -331,6 +331,38 @@ namespace UnitTesting.ServicesUT
             Assert.False(result);
         }
 
-        
+        //UpdateWorldRecord
+        //tc1
+        [Fact]
+        public async Task UpdateWorldRecord_ReturnsTrue()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var disciplineId = 1;
+            var worldRecord = 51.7m;
+            var gender = "f";
+            var repositoryMock = new Mock<IAthleteRepository>();
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+
+            var result = await disciplinesService.updateWorldRecord(disciplineId, worldRecord, gender);
+            Assert.False(result);
+        }
+
+        //tc2
+        [Fact]
+        public async Task UpdateWorldRecord_ReturnsFalse()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var disciplineId = 1;
+            var worldRecord = 51.7m;
+            var gender = "m";
+            var repositoryMock = new Mock<IAthleteRepository>();
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+
+            var result = await disciplinesService.updateWorldRecord(disciplineId, worldRecord, gender);
+            Assert.False(result);
+        }
+
     }
 }
