@@ -320,6 +320,9 @@ namespace UnitTesting.ServicesUT
                 Gender = Gender.F,
                 Points = 1000,
                 PersonalBest = 52.75m,
+                DisciplineId = 1,
+                BirthDate = new DateTime(),
+                IsActive = true,
                 SeasonBest = 52m
             };
             var disciplineName = "400MH";
