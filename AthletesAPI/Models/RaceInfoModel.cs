@@ -15,6 +15,11 @@ namespace AthletesRestAPI.Models
             AthletesRaceInfo = new List<RaceAthleteModel>();
         }
 
+        public RaceInfoModel(List<RaceAthleteModel> athletesInfo)
+        {
+            AthletesRaceInfo = athletesInfo;
+        }
+
         public void AddRaceAthleteModel(RaceAthleteModel raceAthleteModel)
         {
             AthletesRaceInfo.Add(raceAthleteModel);

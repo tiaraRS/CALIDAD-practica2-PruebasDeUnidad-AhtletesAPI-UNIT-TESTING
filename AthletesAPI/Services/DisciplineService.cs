@@ -236,7 +236,7 @@ namespace AthletesRestAPI.Services
 
         }
 
-        bool checkWorldRecord(string gender,DisciplineModel discipline, RaceInfoModel competingResults,out decimal worldRecord)
+        public bool checkWorldRecord(string gender,DisciplineModel discipline, RaceInfoModel competingResults,out decimal worldRecord)
         {
             var bestMark = competingResults.GetHighestMark();
             if (_best3MarksFilter[discipline.Name])

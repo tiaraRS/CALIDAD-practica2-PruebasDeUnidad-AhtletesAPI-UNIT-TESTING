@@ -398,7 +398,7 @@ namespace UnitTesting.ServicesUT
                 {
                     Id = 1,
                     Name = "400M",
-                    FemaleWorldRecord = 7.52m,
+                    FemaleWorldRecord = 57.05m,
                     Athletes = new List<AthleteEntity>(){
                         new AthleteEntity(){ Id = 1,Nationality = "USA", Name = "Sydney Maclaughlin", Gender = Gender.F, Points = 1000},
                         new AthleteEntity(){ Id = 2,Nationality = "USA", Name = "Allyson Felix", Gender = Gender.F, Points = 1500},
@@ -431,7 +431,7 @@ namespace UnitTesting.ServicesUT
                 {
                     Id = 1,
                     Name = "400M",
-                    FemaleWorldRecord = 7.52m,
+                    FemaleWorldRecord = 57.05m,
                     Athletes = new List<AthleteEntity>(){
                         new AthleteEntity(){ Id = 1,Nationality = "USA", Name = "Sydney Maclaughlin", Gender = Gender.F, Points = 1000},
                         new AthleteEntity(){ Id = 2,Nationality = "USA", Name = "Allyson Felix", Gender = Gender.F, Points = 1500},
@@ -450,6 +450,118 @@ namespace UnitTesting.ServicesUT
             Assert.Equal("Usain Bolt",worldRankings.First().Name);
             Assert.Equal("Sydney Maclaughlin", worldRankings.Last().Name);            
         }
+        //CheckWorldRecord
+        //tc1
+        [Fact]
+        public void CheckWorldRecord_400MHW_ReturnsTrue()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var discipline = new DisciplineModel() { Id = 1, Name = "400MH", FemaleWorldRecord = 51.9m };
+            var gender = "f";
+            var competingResults = new RaceInfoModel(new List<RaceAthleteModel>(){
+                        new RaceAthleteModel(){ Id = 1,Country = "USA", Name = "Sydney Maclaughlin", Mark=51.8m, PB=true, SB=true},
+                        new RaceAthleteModel(){ Id = 2,Country = "USA", Name = "Allyson Felix", Mark=52.98m, PB=false, SB=true},
+                        new RaceAthleteModel(){ Id = 3,Country = "Netherlands", Name = "Femke Bol", Mark=53.8m, PB=false, SB=false} }
+                        );
+            var repositoryMock = new Mock<IAthleteRepository>();
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+            var worldRecord = -1m;
+            var result = disciplinesService.checkWorldRecord(gender, discipline, competingResults, out worldRecord);
 
+            Assert.True(result);
+            Assert.NotEqual(-1, worldRecord);
+            Assert.Equal(51.8m, worldRecord);            
+        }
+
+        //tc2
+        [Fact]
+        public void CheckWorldRecord_100MM_ReturnsFalse()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var discipline = new DisciplineModel() { Id = 1, Name = "100M", MaleWorldRecord = 9.19m };
+            var gender = "m";
+            var competingResults = new RaceInfoModel(new List<RaceAthleteModel>(){
+                        new RaceAthleteModel(){ Id = 1,Country = "Jamaica", Name = "Usain Bolt", Mark=9.5m, PB=false, SB=true},
+                        new RaceAthleteModel(){ Id = 2,Country = "Jamaica", Name = "Johann Blake", Mark=10.2m, PB=false, SB=true},
+                        new RaceAthleteModel(){ Id = 3,Country = "Italy", Name = "Lamont Marcell Jacobs", Mark=9.9m, PB=true, SB=false}
+                    });
+            var repositoryMock = new Mock<IAthleteRepository>();
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+            var bestMark = -1m;
+            var result = disciplinesService.checkWorldRecord(gender, discipline, competingResults, out bestMark);
+
+            Assert.False(result);
+            Assert.NotEqual(-1, bestMark);
+            Assert.Equal(9.5m, bestMark);
+        }
+
+        //tc3
+        [Fact]
+        public void CheckWorldRecord_LongJumpW_ReturnsFalse()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var discipline = new DisciplineModel() { Id = 1, Name = "Long Jump", FemaleWorldRecord = 7.52m };
+            var gender = "f";
+            var competingResults = new RaceInfoModel(new List<RaceAthleteModel>(){
+                        new RaceAthleteModel(){ Id = 1,Country = "USA", Name = "Tara Davis", Mark=7.44m, PB=true, SB=true},
+                        new RaceAthleteModel(){ Id = 2,Country = "USA", Name = "Brittney Reese", Mark=7.35m, PB=false, SB=true},
+                        new RaceAthleteModel(){ Id = 3,Country = "Netherlands", Name = "Jackie Joyner-Kersee", Mark=7.28m, PB=false, SB=false}
+                    });
+            var repositoryMock = new Mock<IAthleteRepository>();
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+            var bestMark = -1m;
+            var result = disciplinesService.checkWorldRecord(gender, discipline, competingResults, out bestMark);
+
+            Assert.False(result);
+            Assert.NotEqual(-1, bestMark);
+            Assert.Equal(7.44m, bestMark);
+        }
+
+        //tc4
+        [Fact]
+        public void CheckWorldRecord_LongJumpM_ReturnsFalse()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var discipline = new DisciplineModel() { Id = 1, Name = "Long Jump", MaleWorldRecord = 8.95m };
+            var gender = "m";
+            var competingResults = new RaceInfoModel(new List<RaceAthleteModel>(){
+                        new RaceAthleteModel(){ Id = 1,Country = "Greece", Name = "Tentoglou Miltiadis", Mark=8.98m, PB=true, SB=true},
+                        new RaceAthleteModel(){ Id = 2,Country = "Cuba", Name = "Juan Miguel Echevarria", Mark=8.76m, PB=false, SB=true},
+                        new RaceAthleteModel(){ Id = 3,Country = "Spain", Name = "Eusebio Cáceres", Mark=8.46m, PB=false, SB=false}
+                    });
+            var repositoryMock = new Mock<IAthleteRepository>();
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+            var bestMark = -1m;
+            var result = disciplinesService.checkWorldRecord(gender, discipline, competingResults, out bestMark);
+
+            Assert.True(result);
+            Assert.NotEqual(-1, bestMark);
+            Assert.Equal(8.98m, bestMark);
+        }
+
+        //tc4
+        [Fact]
+        public void CheckWorldRecord_InvalidGender_ReturnsFalse()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var discipline = new DisciplineModel() { Id = 1, Name = "Long Jump", MaleWorldRecord = 8.95m };
+            var gender = "all";
+            var competingResults = new RaceInfoModel(new List<RaceAthleteModel>(){
+                        new RaceAthleteModel(){ Id = 1,Country = "Greece", Name = "Tentoglou Miltiadis", Mark=8.98m, PB=true, SB=true},
+                        new RaceAthleteModel(){ Id = 2,Country = "Cuba", Name = "Juan Miguel Echevarria", Mark=8.76m, PB=false, SB=true},
+                        new RaceAthleteModel(){ Id = 3,Country = "Spain", Name = "Eusebio Cáceres", Mark=8.46m, PB=false, SB=false}
+                    });
+            var repositoryMock = new Mock<IAthleteRepository>();
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+            var bestMark = -1m;
+            var result = disciplinesService.checkWorldRecord(gender, discipline, competingResults, out bestMark);
+
+            Assert.False(result);            
+        }
     }
 }
