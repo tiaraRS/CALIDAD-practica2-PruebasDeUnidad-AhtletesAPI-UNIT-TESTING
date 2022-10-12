@@ -44,7 +44,7 @@ namespace UnitTesting.ServicesUT
         //GetDisciplineAsync
         //tc1
         [Fact]
-        public async Task GetDisciplineAsync_InvalidId_ThrowsNotFoundElementException()
+        public void GetDisciplineAsync_InvalidId_ThrowsNotFoundElementException()
         {
             var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
             var mapper = config.CreateMapper();
@@ -121,7 +121,7 @@ namespace UnitTesting.ServicesUT
         //CreateDisciplineAsync
         //tc1
         [Fact]
-        public async Task CreateDisciplineAsync_ValidId_ReuturnsDBException()
+        public void CreateDisciplineAsync_ValidId_ReuturnsDBException()
         {
             var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
             var mapper = config.CreateMapper();
@@ -364,7 +364,91 @@ namespace UnitTesting.ServicesUT
             var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
 
             var result = await disciplinesService.updateWorldRecord(disciplineId, worldRecord, gender);
-            Assert.False(result);
+            Assert.False(result);            
+        }
+
+        //GetWorldRankingAsync
+        //tc1
+        [Fact]
+        public void GetWorldRankingAsync_InvalidGender_ReturnsInvalidElementOperationException()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var disciplineId = 1;
+            var gender = "k";
+            var repositoryMock = new Mock<IAthleteRepository>();
+            //repositoryMock.Setup(d=>d.GetDisciplineAsync(1,true)).ReturnsAsync()
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+
+            var exception = Assert.ThrowsAsync<InvalidElementOperationException>(async () => await disciplinesService.GetWorldRankingsAsync(disciplineId, gender));
+            Assert.Equal("invalid gender value : k. The allowed values for param are: f,m,all", exception.Result.Message);
+        }
+
+        //tc2
+        [Fact]
+        public async Task GetWorldRankingAsync_ReturnsDisciplineWorldRankings()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var disciplineId = 1;
+            var gender = "f";
+            var repositoryMock = new Mock<IAthleteRepository>();
+            repositoryMock.Setup(d => d.GetDisciplineAsync(1, true)).ReturnsAsync(
+                new DisciplineEntity()
+                {
+                    Id = 1,
+                    Name = "400M",
+                    FemaleWorldRecord = 7.52m,
+                    Athletes = new List<AthleteEntity>(){
+                        new AthleteEntity(){ Id = 1,Nationality = "USA", Name = "Sydney Maclaughlin", Gender = Gender.F, Points = 1000},
+                        new AthleteEntity(){ Id = 2,Nationality = "USA", Name = "Allyson Felix", Gender = Gender.F, Points = 1500},
+                        new AthleteEntity(){ Id = 3,Nationality = "Jamaica", Name = "Usain Bolt", Gender = Gender.M}
+                    }
+                });
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+            
+            var worldRankings = await disciplinesService.GetWorldRankingsAsync(disciplineId, gender);
+            Assert.NotNull(worldRankings);
+            Assert.NotEmpty(worldRankings);
+            Assert.Equal(2,worldRankings.Count());
+            Assert.Contains(worldRankings, athlete => athlete.Id == 1);
+            Assert.Contains(worldRankings, athlete => athlete.Id == 2);
+            Assert.DoesNotContain(worldRankings, athlete => athlete.Id == 3);
+            Assert.All(worldRankings, athlete => Assert.Equal(Gender.F,athlete.Gender));
+            
+        }
+        //tc3
+        [Fact]
+        public async Task GetWorldRankingAsync_GenderAll_ReturnsDisciplineWorldRankings()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var disciplineId = 1;
+            var gender = "all";
+            var repositoryMock = new Mock<IAthleteRepository>();
+            repositoryMock.Setup(d => d.GetDisciplineAsync(1, true)).ReturnsAsync(
+                new DisciplineEntity()
+                {
+                    Id = 1,
+                    Name = "400M",
+                    FemaleWorldRecord = 7.52m,
+                    Athletes = new List<AthleteEntity>(){
+                        new AthleteEntity(){ Id = 1,Nationality = "USA", Name = "Sydney Maclaughlin", Gender = Gender.F, Points = 1000},
+                        new AthleteEntity(){ Id = 2,Nationality = "USA", Name = "Allyson Felix", Gender = Gender.F, Points = 1500},
+                        new AthleteEntity(){ Id = 3,Nationality = "Jamaica", Name = "Usain Bolt", Gender = Gender.M, Points = 2000}
+                    }
+                });
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+
+            var worldRankings = await disciplinesService.GetWorldRankingsAsync(disciplineId, gender);
+            Assert.NotNull(worldRankings);
+            Assert.NotEmpty(worldRankings);
+            Assert.Equal(3, worldRankings.Count());
+            Assert.Contains(worldRankings, athlete => athlete.Id == 1);
+            Assert.Contains(worldRankings, athlete => athlete.Id == 2);
+            Assert.Contains(worldRankings, athlete => athlete.Id == 3);
+            Assert.Equal("Usain Bolt",worldRankings.First().Name);
+            Assert.Equal("Sydney Maclaughlin", worldRankings.Last().Name);            
         }
 
     }

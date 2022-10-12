@@ -100,7 +100,7 @@ namespace AthletesRestAPI.Services
             athletes = athletes.OrderByDescending(a => a.Points).ToList();
             if (gender != "all")
             {
-               athletes =  athletes.Where(a => a.Gender.ToString() == gender).ToList();
+               athletes =  athletes.Where(a => a.Gender.ToString().ToLower() == gender.ToLower()).ToList();
             }
             //var listAthletes = _mapper.Map<IList<AthleteModel>>(athletes);
             return athletes;
