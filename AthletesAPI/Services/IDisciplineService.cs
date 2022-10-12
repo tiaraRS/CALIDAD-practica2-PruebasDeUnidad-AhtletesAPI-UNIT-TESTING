@@ -12,7 +12,7 @@ namespace AthletesRestAPI.Services
         public Task<IEnumerable<DisciplineModel>> GetDisciplinesAsync();
         public Task<DisciplineModel> GetDisciplineAsync(int disciplineId, bool showAthletes = false);
         public Task<DisciplineModel> UpdateDisciplineAsync(int disciplineId, DisciplineModel discipline);
-        public Task DeleteDisciplineAsync(int disciplineId);
+        public Task<bool> DeleteDisciplineAsync(int disciplineId);
         public Task<DisciplineModel> CreateDisciplineAsync (DisciplineModel discipline);
 
         //endpoints

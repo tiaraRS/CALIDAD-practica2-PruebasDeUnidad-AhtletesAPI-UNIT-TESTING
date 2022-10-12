@@ -42,15 +42,17 @@ namespace AthletesRestAPI.Services
             throw new Exception("Database Error");
         }
 
-        public async Task DeleteDisciplineAsync(int disciplineId)
+        public async Task<bool> DeleteDisciplineAsync(int disciplineId)
         {
+            bool deleted = false;
            await GetDisciplineAsync(disciplineId);
-           await _athleteRepository.DeleteDisciplineAsync(disciplineId);
+           deleted = await _athleteRepository.DeleteDisciplineAsync(disciplineId);
            var result = await _athleteRepository.SaveChangesAsync();
             if (!result)
             {
                 throw new Exception("Database Error");
             }
+            return deleted;
            
         }
 

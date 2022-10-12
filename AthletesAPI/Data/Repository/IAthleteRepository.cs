@@ -21,8 +21,8 @@ namespace AthletesRestAPI.Data.Repository
        // public IList<AthleteEntity> GetRelayTeam(string discipline, string gender, string country);
 
         //DISCIPLINE
-        public void CreateDiscipline(DisciplineEntity discipline);
-        public Task DeleteDisciplineAsync(int disciplineId);
+        public bool CreateDiscipline(DisciplineEntity discipline);
+        public Task<bool> DeleteDisciplineAsync(int disciplineId);
 
         public Task<DisciplineEntity> GetDisciplineAsync(int disciplineId, bool showAthletes);
         public Task<IEnumerable<DisciplineEntity>> GetDisciplinesAsync();

@@ -295,13 +295,13 @@ namespace AthletesRestAPI.Data.Repository
 
         //DISCIPLINE
 
-        public void CreateDiscipline(DisciplineEntity discipline)
-        {
-
+        public bool CreateDiscipline(DisciplineEntity discipline)
+        {            
             _dbContext.Disciplines.Add(discipline);
+            return true;
         }
 
-        public async Task DeleteDisciplineAsync(int disciplineId)
+        public async Task<bool> DeleteDisciplineAsync(int disciplineId)
         {
             //IQueryable<DisciplineEntity> query = _dbContext.Disciplines;
             var disciplineToDelete = await _dbContext.Disciplines.FirstOrDefaultAsync(d => d.Id == disciplineId);
@@ -312,7 +312,7 @@ namespace AthletesRestAPI.Data.Repository
             }
            // _dbContext.Entry(disciplineToDelete).State = EntityState.Deleted;
             _dbContext.Disciplines.Remove(disciplineToDelete);
-           // return true;
+            return true;
         }
 
         public async Task<DisciplineEntity> GetDisciplineAsync(int disciplineId, bool showAthletes = false) //aumentar showAthletes ? 

@@ -111,11 +111,12 @@ namespace UnitTesting.ServicesUT
                 Name = "100M"
             };
             var repositoryMock = new Mock<IAthleteRepository>();
-            repositoryMock.Setup(r => r.DeleteDisciplineAsync(1));
+            repositoryMock.Setup(r => r.DeleteDisciplineAsync(1)).ReturnsAsync(true);
             repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
             repositoryMock.Setup(r => r.GetDisciplineAsync(1, false)).ReturnsAsync(disciplineEntity100M);
             var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
-            await disciplinesService.DeleteDisciplineAsync(1);                    
+            var result = await disciplinesService.DeleteDisciplineAsync(1);      
+            Assert.True(result);
         }
 
         //CreateDisciplineAsync
@@ -154,14 +155,16 @@ namespace UnitTesting.ServicesUT
             };
             var longJumpDisciplineModel = new DisciplineModel()
             {
-
+                Id=1,
                 Name = "Long Jump"
             };
             var repositoryMock = new Mock<IAthleteRepository>();
             repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
             repositoryMock.Setup(r => r.CreateDiscipline(longJumpDisciplineEntity));
             var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
-            await disciplinesService.CreateDisciplineAsync(longJumpDisciplineModel);
+            var result = await disciplinesService.CreateDisciplineAsync(longJumpDisciplineModel);
+            Assert.NotNull(result);
+            Assert.Equal("Long Jump",result.Name);
         }
 
         //CheckPersonalBest
