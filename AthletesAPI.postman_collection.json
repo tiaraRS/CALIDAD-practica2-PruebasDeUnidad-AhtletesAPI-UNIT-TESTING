@@ -2,191 +2,637 @@
 	"info": {
 		"_postman_id": "416407de-36b2-4519-800f-e5fca859b63d",
 		"name": "AthletesAPI",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17462939"
 	},
 	"item": [
 		{
-			"name": "GetAthletes",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{host}}/api/athletes",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"athletes"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetAthlete",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{host}}/api/athletes/7",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"athletes",
-						"7"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "UpdateAthlete",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"nationality\": \"Spain\",\r\n    \"numberOfCompetitions\": 36\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Athletes",
+			"item": [
+				{
+					"name": "GetAthlete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InRpYXJhQWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxYmUyYzVhYy1iOGIwLTQ3NjgtOTlhNi1lOWY2ZTZiMjU4NjYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTYzOTMzMDg4MiwiaXNzIjoiaHR0cDovL3RlY3dlYi5uZXQiLCJhdWQiOiJodHRwOi8vdGVjd2ViLm5ldCJ9.V_7sk6nwbIbk6IhfOn7Q3vlGiNaTt5syGRFWpYV-vH0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{athletesAPI}}/api/disciplines/10/athletes/34",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"disciplines",
+								"10",
+								"athletes",
+								"34"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{host}}/api/athletes/13",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"athletes",
-						"13"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "CreateAthlete",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Sifan Hassan\",\r\n    \"nationality\": \"Netherlands\",\r\n    \"isActive\": true,\r\n    \"numberOfCompetitions\": 9,\r\n    \"discipline\": \"1500M\",\r\n    \"gender\": \"F\",\r\n    \"personalBest\": {\r\n        \"Key\": \"2021-08-08T00:00:00\",\r\n        \"Value\": 231.57\r\n    },\r\n    \"seasonBest\": null,\r\n    \"birthDate\": \"1995-04-28T00:00:00\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "GetAthletes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InRpYXJhQWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxYmUyYzVhYy1iOGIwLTQ3NjgtOTlhNi1lOWY2ZTZiMjU4NjYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTYzOTMzMDg4MiwiaXNzIjoiaHR0cDovL3RlY3dlYi5uZXQiLCJhdWQiOiJodHRwOi8vdGVjd2ViLm5ldCJ9.V_7sk6nwbIbk6IhfOn7Q3vlGiNaTt5syGRFWpYV-vH0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{athletesAPI}}/api/disciplines/10/athletes",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"disciplines",
+								"10",
+								"athletes"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{host}}/api/athletes",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"athletes"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DeleteAthlete",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{host}}/api/athletes/4",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"athletes",
-						"4"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Race",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{host}}/api/athletes/race/?discipline=TripleJump&gender=F&podium=true",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"athletes",
-						"race",
-						""
-					],
-					"query": [
-						{
-							"key": "discipline",
-							"value": "TripleJump"
+				{
+					"name": "CreateAthlete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InRpYXJhQWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxYmUyYzVhYy1iOGIwLTQ3NjgtOTlhNi1lOWY2ZTZiMjU4NjYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTYzOTMzMDg4MiwiaXNzIjoiaHR0cDovL3RlY3dlYi5uZXQiLCJhdWQiOiJodHRwOi8vdGVjd2ViLm5ldCJ9.V_7sk6nwbIbk6IhfOn7Q3vlGiNaTt5syGRFWpYV-vH0",
+									"type": "string"
+								}
+							]
 						},
-						{
-							"key": "gender",
-							"value": "F"
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"sabrina 6\",\r\n    \"nationality\": \"Netherlands\",\r\n    \"isActive\": true,\r\n    \"numberOfCompetitions\": 9,\r\n    \"gender\": \"M\",\r\n    \"personalBest\": 231.57,\r\n    \"seasonBest\": null,\r\n    \"birthDate\": \"1995-04-28T00:00:00\",\r\n    \"points\":250\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
-						{
-							"key": "podium",
-							"value": "true"
+						"url": {
+							"raw": "{{athletesAPI}}/api/disciplines/10/athletes",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"disciplines",
+								"10",
+								"athletes"
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateAthlete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InRpYXJhQWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxYmUyYzVhYy1iOGIwLTQ3NjgtOTlhNi1lOWY2ZTZiMjU4NjYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTYzOTMzMDg4MiwiaXNzIjoiaHR0cDovL3RlY3dlYi5uZXQiLCJhdWQiOiJodHRwOi8vdGVjd2ViLm5ldCJ9.V_7sk6nwbIbk6IhfOn7Q3vlGiNaTt5syGRFWpYV-vH0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"seasonBest\": 25.34\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{athletesAPI}}/api/disciplines/10/athletes/35",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"disciplines",
+								"10",
+								"athletes",
+								"35"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteAthlete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InRpYXJhQWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxYmUyYzVhYy1iOGIwLTQ3NjgtOTlhNi1lOWY2ZTZiMjU4NjYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTYzOTMzMDg4MiwiaXNzIjoiaHR0cDovL3RlY3dlYi5uZXQiLCJhdWQiOiJodHRwOi8vdGVjd2ViLm5ldCJ9.V_7sk6nwbIbk6IhfOn7Q3vlGiNaTt5syGRFWpYV-vH0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{athletesAPI}}/api/disciplines/10/athletes/37",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"disciplines",
+								"10",
+								"athletes",
+								"37"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "FormRelayTeam",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{host}}/api/athletes/relayTeam/?Discipline=100M&gender=MIX&country=Jamaica&ageCategory=senior",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"athletes",
-						"relayTeam",
-						""
-					],
-					"query": [
-						{
-							"key": "Discipline",
-							"value": "100M"
+			"name": "Disciplines",
+			"item": [
+				{
+					"name": "GetDisciplines",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InRpYXJhQWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxYmUyYzVhYy1iOGIwLTQ3NjgtOTlhNi1lOWY2ZTZiMjU4NjYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTYzOTQxNjk2NCwiaXNzIjoiaHR0cDovL3RlY3dlYi5uZXQiLCJhdWQiOiJodHRwOi8vdGVjd2ViLm5ldCJ9.tb3z5u5XpOJkwqv6x2TNFzZLUSVaxGcr9ZrT3OPOUj8",
+									"type": "string"
+								}
+							]
 						},
-						{
-							"key": "gender",
-							"value": "MIX"
-						},
-						{
-							"key": "country",
-							"value": "Jamaica"
-						},
-						{
-							"key": "ageCategory",
-							"value": "senior"
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{athletesAPI}}/api/disciplines",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"disciplines"
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "GetDiscipline",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InRpYXJhQWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxYmUyYzVhYy1iOGIwLTQ3NjgtOTlhNi1lOWY2ZTZiMjU4NjYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTYzOTMzMDg4MiwiaXNzIjoiaHR0cDovL3RlY3dlYi5uZXQiLCJhdWQiOiJodHRwOi8vdGVjd2ViLm5ldCJ9.V_7sk6nwbIbk6IhfOn7Q3vlGiNaTt5syGRFWpYV-vH0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{athletesAPI}}/api/disciplines/10/?showAthletes=true",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"disciplines",
+								"10",
+								""
+							],
+							"query": [
+								{
+									"key": "showAthletes",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteDiscipline",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InRpYXJhQWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxYmUyYzVhYy1iOGIwLTQ3NjgtOTlhNi1lOWY2ZTZiMjU4NjYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTYzOTMzMDg4MiwiaXNzIjoiaHR0cDovL3RlY3dlYi5uZXQiLCJhdWQiOiJodHRwOi8vdGVjd2ViLm5ldCJ9.V_7sk6nwbIbk6IhfOn7Q3vlGiNaTt5syGRFWpYV-vH0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{athletesAPI}}/api/disciplines/9",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"disciplines",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateDiscipline",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InRpYXJhQWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxYmUyYzVhYy1iOGIwLTQ3NjgtOTlhNi1lOWY2ZTZiMjU4NjYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTYzOTMzMDg4MiwiaXNzIjoiaHR0cDovL3RlY3dlYi5uZXQiLCJhdWQiOiJodHRwOi8vdGVjd2ViLm5ldCJ9.V_7sk6nwbIbk6IhfOn7Q3vlGiNaTt5syGRFWpYV-vH0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n        \"name\": \"600M\",\r\n        \"rules\": \"600M has to be run in a curve plus a straight line\",\r\n        \"creationDate\": \"1600-06-25T00:00:00\",\r\n        \"femaleWorldRecord\": 600.89,\r\n        \"maleWorldRecord\": 666.55,\r\n        \"athletes\": []\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{athletesAPI}}/api/disciplines/10",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"disciplines",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateDiscipline",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InRpYXJhQWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxYmUyYzVhYy1iOGIwLTQ3NjgtOTlhNi1lOWY2ZTZiMjU4NjYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTYzOTMzMDg4MiwiaXNzIjoiaHR0cDovL3RlY3dlYi5uZXQiLCJhdWQiOiJodHRwOi8vdGVjd2ViLm5ldCJ9.V_7sk6nwbIbk6IhfOn7Q3vlGiNaTt5syGRFWpYV-vH0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n        \"name\": \"200M\",\r\n        \"rules\": \"200M has to be run in a straight line plus curve\",\r\n        \"creationDate\": \"1990-08-21T00:00:00\",\r\n        \"femaleWorldRecord\": 20.85,\r\n        \"maleWorldRecord\": 20.58,\r\n        \"athletes\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{athletesAPI}}/api/disciplines",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"disciplines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Race",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InRpYXJhQWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxYmUyYzVhYy1iOGIwLTQ3NjgtOTlhNi1lOWY2ZTZiMjU4NjYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTYzOTQxNjk2NCwiaXNzIjoiaHR0cDovL3RlY3dlYi5uZXQiLCJhdWQiOiJodHRwOi8vdGVjd2ViLm5ldCJ9.tb3z5u5XpOJkwqv6x2TNFzZLUSVaxGcr9ZrT3OPOUj8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{athletesAPI}}/api/disciplines/18/race/?gender=M&podium=false",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"disciplines",
+								"18",
+								"race",
+								""
+							],
+							"query": [
+								{
+									"key": "gender",
+									"value": "M"
+								},
+								{
+									"key": "podium",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetWorldRankings",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InRpYXJhQWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxYmUyYzVhYy1iOGIwLTQ3NjgtOTlhNi1lOWY2ZTZiMjU4NjYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTYzOTMzMDg4MiwiaXNzIjoiaHR0cDovL3RlY3dlYi5uZXQiLCJhdWQiOiJodHRwOi8vdGVjd2ViLm5ldCJ9.V_7sk6nwbIbk6IhfOn7Q3vlGiNaTt5syGRFWpYV-vH0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{athletesAPI}}/api/disciplines/10/worldRankings/?gender=M",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"disciplines",
+								"10",
+								"worldRankings",
+								""
+							],
+							"query": [
+								{
+									"key": "gender",
+									"value": "M"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "Security",
+			"item": [
+				{
+					"name": "CreateRole",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Admin\",\r\n    \"NormalizedName\": \"Admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{athletesAPI}}/api/auth/role",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateAdminUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\": \"tiaraAdmin@gmail.com\",\r\n    \"Password\": \"tiaraTiara12.\",\r\n    \"ConfirmPassword\": \"tiaraTiara12.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{athletesAPI}}/api/auth/User",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"User"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateUserRole",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"UserId\": \"addd79a3-031e-49e8-bc10-115ec6330adf\",\r\n    \"RoleId\": \"af0c6be1-34a0-465d-a006-ebaa244dd80b\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{athletesAPI}}/api/auth/UserRole",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"UserRole"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\": \"tiaraAdmin@gmail.com\",\r\n    \"Password\": \"tiaraTiara12.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{athletesAPI}}/api/auth/Login",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\": \"tiaraAdmin@gmail.com\",\r\n    \"Password\": \"tiaraTiara12.\",\r\n    \"ConfirmPassword\": \"tiaraTiara12.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{athletesAPI}}/api/auth/User",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"User"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "prueba",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\": \"tiaraUser12e@gmail.com\",\r\n    \"Password\": \"tiar\",\r\n    \"ConfirmPassword\": \"tiar\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{athletesAPI}}/api/auth/User",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"User"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pruebaLOGIN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\": \"tiaraAdmin@gmail.com\",\r\n    \"Password\": \"tiaraTiara12.1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{athletesAPI}}/api/auth/Login",
+							"host": [
+								"{{athletesAPI}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"Login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
