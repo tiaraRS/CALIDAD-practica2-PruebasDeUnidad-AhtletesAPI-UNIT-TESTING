@@ -114,7 +114,7 @@ namespace UnitTesting.ServicesUT
             Assert.True(response.IsSuccess);
         }
 
-        //tc3
+        //tc4
         [Fact]
         public async Task LoginUser_LoginIsSuccesfulWithoutRoles()
         {
@@ -147,6 +147,107 @@ namespace UnitTesting.ServicesUT
 
             //ASSERT
             Assert.True(response.IsSuccess);
+        }
+
+        //RegisterUserAsync
+        //tc1
+        [Fact]
+        public async Task RegisterUser_UserIsNull()
+        {
+            //ARRANGE
+            var registerModel = (RegisterViewModel)null;
+
+            var userManagerMock = new Mock<UserManager<IdentityUser>>(Mock.Of<IUserStore<IdentityUser>>(), null, null, null, null, null, null, null, null);
+            var roleManagerMock = new Mock<RoleManager<IdentityRole>>(Mock.Of<IRoleStore<IdentityRole>>(), null, null, null, null);
+            var configurationMock = new Mock<IConfiguration>();
+
+
+            //ACT
+            var userService = new UserService(userManagerMock.Object, roleManagerMock.Object, configurationMock.Object);
+            var exception = Assert.ThrowsAsync<NullReferenceException>(async () => await userService.RegisterUserAsync(registerModel));
+
+            //ASSERT
+            Assert.Equal("model is null", exception.Result.Message);
+        }
+
+        //tc2
+        [Fact]
+        public async Task RegisterUser_UserPasswordsDontMatch()
+        {
+            //ARRANGE
+            var registerModel = new RegisterViewModel()
+            {
+                Email="testmail@gmail.com", 
+                Password="SecretPass1234", 
+                ConfirmPassword="NoPass1234"
+            };
+
+            var userManagerMock = new Mock<UserManager<IdentityUser>>(Mock.Of<IUserStore<IdentityUser>>(), null, null, null, null, null, null, null, null);
+            var roleManagerMock = new Mock<RoleManager<IdentityRole>>(Mock.Of<IRoleStore<IdentityRole>>(), null, null, null, null);
+            var configurationMock = new Mock<IConfiguration>();
+
+
+            //ACT
+            var userService = new UserService(userManagerMock.Object, roleManagerMock.Object, configurationMock.Object);
+            var response = await userService.RegisterUserAsync(registerModel);
+
+            //ASSERT
+            Assert.Equal("Confirm password doesn't match the password", response.Token);
+            Assert.False(response.IsSuccess);
+        }
+
+        //tc3
+        [Fact]
+        public async Task RegisterUser_UserRegisterSuccesful()
+        {
+            //ARRANGE
+            var registerModel = new RegisterViewModel()
+            {
+                Email = "testmail@gmail.com",
+                Password = "SecretPass1234",
+                ConfirmPassword = "SecretPass1234"
+            };
+
+            var userManagerMock = new Mock<UserManager<IdentityUser>>(Mock.Of<IUserStore<IdentityUser>>(), null, null, null, null, null, null, null, null);
+            var roleManagerMock = new Mock<RoleManager<IdentityRole>>(Mock.Of<IRoleStore<IdentityRole>>(), null, null, null, null);
+            var configurationMock = new Mock<IConfiguration>();
+
+            userManagerMock.Setup(x => x.CreateAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
+
+            //ACT
+            var userService = new UserService(userManagerMock.Object, roleManagerMock.Object, configurationMock.Object);
+            var response = await userService.RegisterUserAsync(registerModel);
+
+            //ASSERT
+            Assert.Equal("User created successfully!", response.Token);
+            Assert.True(response.IsSuccess);
+        }
+
+        //tc4
+        [Fact]
+        public async Task RegisterUser_UserRegisterFailed()
+        {
+            //ARRANGE
+            var registerModel = new RegisterViewModel()
+            {
+                Email = "testmail@gmail.com",
+                Password = "SecretPass1234",
+                ConfirmPassword = "SecretPass1234"
+            };
+
+            var userManagerMock = new Mock<UserManager<IdentityUser>>(Mock.Of<IUserStore<IdentityUser>>(), null, null, null, null, null, null, null, null);
+            var roleManagerMock = new Mock<RoleManager<IdentityRole>>(Mock.Of<IRoleStore<IdentityRole>>(), null, null, null, null);
+            var configurationMock = new Mock<IConfiguration>();
+
+            userManagerMock.Setup(x => x.CreateAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Failed(new IdentityError()));
+
+            //ACT
+            var userService = new UserService(userManagerMock.Object, roleManagerMock.Object, configurationMock.Object);
+            var response = await userService.RegisterUserAsync(registerModel);
+
+            //ASSERT
+            Assert.Equal("User did not create", response.Token);
+            Assert.False(response.IsSuccess);
         }
     }
 }
