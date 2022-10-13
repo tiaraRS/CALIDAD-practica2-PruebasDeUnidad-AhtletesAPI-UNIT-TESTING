@@ -15,9 +15,8 @@ namespace AthletesRestAPI.Models
     public class AthleteModel
     {
         public int Id { get; set; }
-
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } 
         public string Nationality { get; set; }
         public bool? IsActive { get; set; }
         public int? NumberOfCompetitions { get; set; }
