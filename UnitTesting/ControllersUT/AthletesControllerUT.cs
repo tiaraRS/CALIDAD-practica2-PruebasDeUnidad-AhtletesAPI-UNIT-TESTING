@@ -219,5 +219,65 @@ namespace UnitTesting.ControllersUT
 
             Assert.Equal(statusCodeExpected,actualStatusCode);
         }
+
+
+
+        //DeleteAthleteAsync
+        //tc1
+        [Fact]
+        public async Task DeleteAthleteAsync_ReturnsStatusCode500()
+        {
+            int disciplineId = 1;
+            int athleteId = 1;
+            var serviceMock = new Mock<IAthleteService>();
+
+            serviceMock.Setup(serv => serv.DeleteAthleteAsync(athleteId,disciplineId))
+                .Throws(new Exception("Something happened"));
+
+            var fileService = new FileService();
+            var athletesController = new AthletesController(serviceMock.Object, fileService);
+
+            var response = await athletesController.DeleteAthleteAsync(athleteId, disciplineId);
+            var actualStatusCode = ((ObjectResult)response).StatusCode;
+
+            Assert.Equal(500, actualStatusCode);
+        }
+        //tc2
+        [Fact]
+        public async Task DeleteAthleteAsync_ReturnsStatusCode404()
+        {
+            int disciplineId = 1;
+            int athleteId = 87;
+            var serviceMock = new Mock<IAthleteService>();
+
+            serviceMock.Setup(serv => serv.DeleteAthleteAsync(athleteId, disciplineId))
+                .Throws(new NotFoundElementException($"Athlete with id {athleteId} does not exist in discipline {disciplineId}"));
+
+            var fileService = new FileService();
+            var athletesController = new AthletesController(serviceMock.Object, fileService);
+
+            var response = await athletesController.DeleteAthleteAsync(athleteId, disciplineId);
+            var actualStatusCode = ((ObjectResult)response).StatusCode;
+
+            Assert.Equal(404, actualStatusCode);
+        }
+        //tc3
+        [Fact]
+        public async Task DeleteAthleteAsync_ReturnsStatusCode200()
+        {
+            int disciplineId = 1;
+            int athleteId = 1;
+            var serviceMock = new Mock<IAthleteService>();
+
+            serviceMock.Setup(serv => serv.DeleteAthleteAsync(athleteId, disciplineId));
+
+            var fileService = new FileService();
+            var athletesController = new AthletesController(serviceMock.Object, fileService);
+
+            var response = await athletesController.DeleteAthleteAsync(athleteId, disciplineId);
+            var actualStatusCode = ((OkResult)response).StatusCode;
+
+            Assert.Equal(200, actualStatusCode);
+        }
     }
 }
