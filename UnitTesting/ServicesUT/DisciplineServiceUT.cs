@@ -609,5 +609,156 @@ namespace UnitTesting.ServicesUT
             var exception = Assert.ThrowsAsync<Exception>(async () => await disciplinesService.UpdateDisciplineAsync(disciplineId, disciplineModel));
             Assert.Equal("Database Error", exception.Result.Message);
         }
+
+        //RaceAsync
+        //tc1
+        [Fact]
+        public void RaceAsync_ThrowsDBErrorException()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var disciplineId = 1;
+            var gender = "M";
+            var podium = "true";
+            var disciplineEntity = new DisciplineEntity() { Id = 1, Name = "100M", MaleWorldRecord = 9.58m };
+            var disciplineModel = new DisciplineModel() { Id = 1, Name = "Triple Jump", MaleWorldRecord = 8.95m };
+            var repositoryMock = new Mock<IAthleteRepository>();
+            repositoryMock.Setup(r => r.UpdateDisciplineAsync(1, disciplineEntity)).ReturnsAsync(true);
+            repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(false);
+            repositoryMock.Setup(r => r.GetAthletesAsync(1)).ReturnsAsync(new List<AthleteEntity>() {
+                new AthleteEntity(){ Id = 1, Name = "Usain Bolt", Gender = Gender.M, IsActive = true, SeasonBest = 9.37m, PersonalBest = 9.37m
+                } });
+            repositoryMock.Setup(r => r.GetDisciplineAsync(1, false)).ReturnsAsync(disciplineEntity);
+            
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+            var exception = Assert.ThrowsAsync<Exception>(async () => await disciplinesService.RaceAsync(disciplineId,gender,podium));
+            Assert.Equal("Database Error", exception.Result.Message);
+        }
+
+        //tc2
+        [Fact]
+        public async Task RaceAsync_ReturnsCompetingResults_WorldRecord()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var disciplineId = 1;
+            var gender = "M";
+            var podium = "true";
+            var disciplineEntity = new DisciplineEntity() { Id = 1, Name = "100M", MaleWorldRecord = 9.58m };
+            var repositoryMock = new Mock<IAthleteRepository>();
+            repositoryMock.Setup(r => r.UpdateDisciplineAsync(1, disciplineEntity)).ReturnsAsync(true);
+            repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
+            repositoryMock.Setup(r => r.GetAthletesAsync(1)).ReturnsAsync(new List<AthleteEntity>() {
+                new AthleteEntity(){ Id = 1, Name = "Usain Bolt", Gender = Gender.M, IsActive = true, SeasonBest = 9.37m, PersonalBest = 9.37m
+                } });
+            repositoryMock.Setup(r => r.GetDisciplineAsync(1, false)).ReturnsAsync(disciplineEntity);
+
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+            var competingResults = await disciplinesService.RaceAsync(disciplineId, gender, podium);
+            Assert.NotNull(competingResults);
+            Assert.Single(competingResults.AthletesRaceInfo);
+            Assert.Contains(competingResults.AthletesRaceInfo, athlete => athlete.Id == 1);
+            Assert.Contains(competingResults.AthletesRaceInfo, athlete => athlete.Name == "Usain Bolt");
+            Assert.True(competingResults.WorldRecord);        
+        }
+        //tc3
+        [Fact]
+        public void RaceAsync_ThrowsDBException_NoWorldRecord()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var disciplineId = 1;
+            var gender = "M";
+            var podium = "true";
+            var disciplineEntity = new DisciplineEntity() { Id = 1, Name = "100M", MaleWorldRecord = 9.58m };
+            var repositoryMock = new Mock<IAthleteRepository>();
+            repositoryMock.Setup(r => r.UpdateDisciplineAsync(1, disciplineEntity)).ReturnsAsync(true);
+            repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(false);
+            repositoryMock.Setup(r => r.GetAthletesAsync(1)).ReturnsAsync(new List<AthleteEntity>() {
+                new AthleteEntity(){ Id = 1, Name = "Usain Bolt", Gender = Gender.M, IsActive = true, SeasonBest = 9.98m, PersonalBest = 9.58m
+                } });
+            repositoryMock.Setup(r => r.GetDisciplineAsync(1, false)).ReturnsAsync(disciplineEntity);
+
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+            var exception = Assert.ThrowsAsync<Exception>(async () => await disciplinesService.RaceAsync(disciplineId, gender, podium));
+            Assert.Equal("Database Error", exception.Result.Message);
+        }
+        //tc5
+        [Fact]
+        public void RaceAsync_ReturnsCompetingResults_NoWorldRecord()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var disciplineId = 1;
+            var gender = "M";
+            var podium = "true";
+            var disciplineEntity = new DisciplineEntity() { Id = 1, Name = "Long Jump", MaleWorldRecord = 8.9m };
+            var repositoryMock = new Mock<IAthleteRepository>();
+            repositoryMock.Setup(r => r.UpdateDisciplineAsync(1, disciplineEntity)).ReturnsAsync(true);
+            repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(false);
+            repositoryMock.Setup(r => r.GetAthletesAsync(1)).ReturnsAsync(new List<AthleteEntity>() {
+                new AthleteEntity(){ Id = 1, Name = "Usain Bolt", Gender = Gender.M, IsActive = true, SeasonBest = 8m, PersonalBest = 8m
+                } });
+            repositoryMock.Setup(r => r.GetDisciplineAsync(1, false)).ReturnsAsync(disciplineEntity);
+
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+            var exception = Assert.ThrowsAsync<Exception>(async () => await disciplinesService.RaceAsync(disciplineId, gender, podium));
+            Assert.Equal("Database Error", exception.Result.Message);
+        }
+        //tc6
+        [Fact]
+        public void RaceAsync_NoAthletesToRaceException()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var disciplineId = 1;
+            var gender = "M";
+            var podium = "true";
+            var disciplineEntity = new DisciplineEntity() { Id = 1, Name = "100M", MaleWorldRecord = 9.58m };
+            var repositoryMock = new Mock<IAthleteRepository>();
+            repositoryMock.Setup(r => r.UpdateDisciplineAsync(1, disciplineEntity)).ReturnsAsync(true);
+            repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(false);
+            repositoryMock.Setup(r => r.GetAthletesAsync(1)).ReturnsAsync(new List<AthleteEntity>());
+            repositoryMock.Setup(r => r.GetDisciplineAsync(1, false)).ReturnsAsync(disciplineEntity);
+
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+            var exception = Assert.ThrowsAsync<NoAthletesToRaceException>(async () => await disciplinesService.RaceAsync(disciplineId, gender, podium));
+            Assert.Equal("There are no athletes in discipline to perform race", exception.Result.Message);
+        }
+        //tc7
+        [Fact]
+        public void RaceAsync_NoAthletesWithGenderToRaceException()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var disciplineId = 1;
+            var gender = "M";
+            var podium = "true";
+            var disciplineEntity = new DisciplineEntity() { Id = 1, Name = "100M", MaleWorldRecord = 9.58m };
+            var repositoryMock = new Mock<IAthleteRepository>();
+            repositoryMock.Setup(r => r.UpdateDisciplineAsync(1, disciplineEntity)).ReturnsAsync(true);
+            repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
+            repositoryMock.Setup(r => r.GetAthletesAsync(1)).ReturnsAsync(new List<AthleteEntity>() {
+                new AthleteEntity(){ Id = 1, Name = "Usain Bolt", Gender = Gender.M, IsActive = false, SeasonBest = 9.98m, PersonalBest = 9.58m
+                } });
+            repositoryMock.Setup(r => r.GetDisciplineAsync(1, false)).ReturnsAsync(disciplineEntity);
+
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+            var exception = Assert.ThrowsAsync<NoAthletesToRaceException>(async () => await disciplinesService.RaceAsync(disciplineId, gender, podium));
+            Assert.Equal("There are no athletes in discipline with gender M which are active to perform race", exception.Result.Message);
+        }
+        //tc8
+        [Fact]
+        public void RaceAsync_InvalidGender_ReturnsIncompleteRequestException()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            var disciplineId = 1;
+            var repositoryMock = new Mock<IAthleteRepository>();
+        
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+            var exception = Assert.ThrowsAsync<IncompleteRequestException>(async () => await disciplinesService.RaceAsync(disciplineId));
+            Assert.Equal("Unable to complete request. Please specify gender as param", exception.Result.Message);
+        }
     }
 }
