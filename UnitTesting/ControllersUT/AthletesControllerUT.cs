@@ -18,7 +18,7 @@ namespace UnitTesting.ControllersUT
 {
     public class AthletesControllerUT
     {
-        //GetAthletesAsync
+        //CreateAthleteAsync
         //tc1
         [Fact]
         public async Task CreateAthleteAsync_ReturnsStatusCode500()
@@ -39,19 +39,111 @@ namespace UnitTesting.ControllersUT
             };
 
             serviceMock.Setup(serv => serv.CreateAthleteAsync(It.IsAny<AthleteModel>(), It.IsAny<int>()))
-                .Throws(new Exception("Something happened"));
+                .Throws(new Exception("Something happened."));
 
             var fileService = new FileService();
             var athletesController = new AthletesController(serviceMock.Object, fileService);
 
             var response = await athletesController.CreateAthleteAsync(athlete,disciplineId);
-            var athleteActual = response.Value;
+            var athleteActual = ((ObjectResult)response.Result).Value;
             var actualStatusCode = ((ObjectResult) response.Result).StatusCode;
 
             Assert.Equal(500, actualStatusCode);
-            Assert.Null(athleteActual);
+            Assert.Equal("Something happened.", athleteActual);
         }
+
         //tc2
+        [Fact]
+        public async Task CreateAthleteAsync_ReturnsStatusCode404()
+        {
+            int disciplineId = 87;
+            var serviceMock = new Mock<IAthleteService>();
+            var athlete = new AthleteModel()
+            {
+                Id = 1,
+                BirthDate = DateTime.Now,
+                DisciplineId = disciplineId,
+                Gender = Gender.M,
+                Name = "Pepe",
+                NumberOfCompetitions = 1,
+                PersonalBest = 125,
+                SeasonBest = 150,
+                Nationality = "Boliviano"
+            };
+
+            serviceMock.Setup(serv => serv.CreateAthleteAsync(It.IsAny<AthleteModel>(), It.IsAny<int>()))
+                .Throws(new NotFoundElementException($"Athlete with id {athlete.Id} does not exist in discipline {disciplineId}"));
+
+            var fileService = new FileService();
+            var athletesController = new AthletesController(serviceMock.Object, fileService);
+
+            var response = await athletesController.CreateAthleteAsync(athlete, disciplineId);
+            var athleteActual = ((ObjectResult)response.Result).Value;
+            var actualStatusCode = ((ObjectResult)response.Result).StatusCode;
+            
+            Assert.Equal(404, actualStatusCode);
+            Assert.Equal("Athlete with id 1 does not exist in discipline 87", athleteActual);
+        }
+        //tc3
+        [Fact]
+        public async Task CreateAthleteAsync_ReturnsStatusCode201()
+        {
+            int disciplineId = 1;
+            var serviceMock = new Mock<IAthleteService>();
+            var athlete = new AthleteModel()
+            {
+                Id = 1,
+                BirthDate = DateTime.Now,
+                DisciplineId = disciplineId,
+                Gender = Gender.M,
+                Name = "Pepe",
+                NumberOfCompetitions = 1,
+                PersonalBest = 125,
+                SeasonBest = 150,
+                Nationality = "Boliviano"
+            };
+
+            serviceMock.Setup(serv => serv.CreateAthleteAsync(It.IsAny<AthleteModel>(), It.IsAny<int>())).ReturnsAsync(athlete);
+
+            var fileService = new FileService();
+            var athletesController = new AthletesController(serviceMock.Object, fileService);
+
+            var response = await athletesController.CreateAthleteAsync(athlete, disciplineId);
+            var athleteActual = ((ObjectResult)response.Result).Value;
+            var actualStatusCode = ((ObjectResult)response.Result).StatusCode;
+
+            Assert.Equal(201, actualStatusCode);
+            Assert.Equal(athlete, athleteActual);
+        }
+        //tc4
+        [Fact]
+        public async Task CreateAthleteAsync_ReturnsStatusCode400()
+        {
+            int disciplineId = 1;
+            var serviceMock = new Mock<IAthleteService>();
+            var athlete = new AthleteModel()//no name set
+            {
+                Name = null,
+                BirthDate = DateTime.Now,
+                NumberOfCompetitions = 1,
+                PersonalBest = 125,
+                SeasonBest = 150,
+                Nationality = "Boliviano"
+            };
+
+            serviceMock.Setup(serv => serv.CreateAthleteAsync(It.IsAny<AthleteModel>(), It.IsAny<int>())).ReturnsAsync(athlete);
+
+            var fileService = new FileService();
+            var athletesController = new AthletesController(serviceMock.Object, fileService);
+
+            var response = await athletesController.CreateAthleteAsync(athlete, disciplineId);
+            var athleteActual = ((ObjectResult)response.Result).Value;
+            var actualStatusCode = ((ObjectResult)response.Result).StatusCode;
+
+            Assert.Equal(400, actualStatusCode);//Failing, Model.IsValid not working
+            Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
 
 
         //GetAthletesAsync
