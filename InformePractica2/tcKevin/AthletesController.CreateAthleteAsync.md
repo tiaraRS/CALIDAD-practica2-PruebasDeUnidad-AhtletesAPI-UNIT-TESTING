@@ -339,3 +339,6 @@ public async Task CreateAthleteAsync_ReturnsStatusCode201()
 //    Assert.IsType<BadRequestObjectResult>(response.Result);
 //}
 ```
+
+### Peculiaridades 
+El test case 4 nos permitió identificar un `BUG 🪲` en el cual aunque campos del `AthleteModel` eran especificados como `[Required]`, al momento de validar el modelo, al ser estos campos `null` indica que el modelo es valido, lo cual es un comportamiento no esperado.
