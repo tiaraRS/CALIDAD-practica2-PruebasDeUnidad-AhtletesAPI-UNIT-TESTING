@@ -21,6 +21,42 @@ namespace UnitTesting.ControllersUT
         //GetAthletesAsync
         //tc1
         [Fact]
+        public async Task CreateAthleteAsync_ReturnsStatusCode500()
+        {
+            int disciplineId = 1;
+            var serviceMock = new Mock<IAthleteService>();
+            var athlete = new AthleteModel()
+            {
+                Id = 1,
+                BirthDate = DateTime.Now,
+                DisciplineId = disciplineId,
+                Gender = Gender.M,
+                Name = "Pepe",
+                NumberOfCompetitions = 1,
+                PersonalBest = 125,
+                SeasonBest = 150,
+                Nationality = "Boliviano"
+            };
+
+            serviceMock.Setup(serv => serv.CreateAthleteAsync(It.IsAny<AthleteModel>(), It.IsAny<int>()))
+                .Throws(new Exception("Something happened"));
+
+            var fileService = new FileService();
+            var athletesController = new AthletesController(serviceMock.Object, fileService);
+
+            var response = await athletesController.CreateAthleteAsync(athlete,disciplineId);
+            var athleteActual = response.Value;
+            var actualStatusCode = ((ObjectResult) response.Result).StatusCode;
+
+            Assert.Equal(500, actualStatusCode);
+            Assert.Null(athleteActual);
+        }
+        //tc2
+
+
+        //GetAthletesAsync
+        //tc1
+        [Fact]
         public async Task GetAthletesAsync_ReturnsStatusCode500()
         {
             int disciplineId = 87;
