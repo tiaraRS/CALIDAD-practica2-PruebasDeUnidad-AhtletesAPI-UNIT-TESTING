@@ -38,5 +38,26 @@ namespace AthletesRestAPI.Models
         //images
         public string ImagePath { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            if (!(obj is AthleteModel))
+            {
+                return false;
+            }
+
+            AthleteModel other = (AthleteModel)obj;
+            return this.Id == other.Id &&
+                this.Name == other.Name &&
+                this.Nationality == other.Nationality &&
+                this.IsActive == other.IsActive &&
+                this.NumberOfCompetitions == other.NumberOfCompetitions &&
+                this.DisciplineId == other.DisciplineId &&
+                this.Gender == other.Gender &&
+                this.PersonalBest == other.PersonalBest &&
+                this.SeasonBest == other.SeasonBest &&
+                this.Points == other.Points &&
+                this.ImagePath == other.ImagePath;
+        }
+
     }
 }
