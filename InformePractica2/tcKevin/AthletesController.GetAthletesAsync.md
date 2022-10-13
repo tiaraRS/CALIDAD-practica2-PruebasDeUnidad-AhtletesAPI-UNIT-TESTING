@@ -184,27 +184,27 @@ public async Task GetAthletesAsync_ReturnsListOfAthletes()
 
     Assert.Equal(statusCodeExpected,actualStatusCode);
 }
-```
-
-## AthleteService.GetAthletesAsync
+```## AthletesController.GetAthletesAsync
 
 ### Código
 
 ```csharp
-public async Task<IEnumerable<ShortAthleteModel>> GetAthletesAsync(int disciplineId)
+[HttpGet]
+public async Task<ActionResult<IEnumerable<ShortAthleteModel>>> GetAthletesAsync(int disciplineId)
 {
-    await GetDisciplineAsync(disciplineId);//1
-
-    //2
-    var athletesListEntity = await _athleteRepository.GetAthletesAsync(disciplineId);
-    var athletes = _mapper.Map<IList<ShortAthleteModel>>(athletesListEntity);
-    
-    foreach(var athlete in athletes)//3
-    {
-        athlete.DisciplineId = disciplineId;//4
-    }
-
-    return athletes;//5
+    try
+    {
+        var athletes = await _athleteService.GetAthletesAsync(disciplineId);//1
+        return Ok(athletes);//2
+    }
+    catch (NotFoundElementException ex)//3
+    {
+        return NotFound(ex.Message);//4
+    }
+    catch (Exception)//5
+    {
+        return StatusCode(StatusCodes.Status500InternalServerError, "Something happened.");//6
+    }
 }
 ```
 
@@ -214,12 +214,13 @@ public async Task<IEnumerable<ShortAthleteModel>> GetAthletesAsync(int disciplin
 graph TD
     I(I) --> 1(1)
     1 --> 2(2)
-    1 --> F
-    2 --> 3(3)
-    3 --> 4(4)
-    4 --> 3
+    1 --> 3(3)
+    3 --> 4(4)
     3 --> 5(5)
-    5 --> F(F)
+    5 --> 6(6)
+    2 --> F(F)
+    4 --> F(F)
+    6 --> F(F)
 ```
 
 ### Complejidad ciclo matica
@@ -233,74 +234,67 @@ $$
 Numero de nodos y aristas
 $$
 v(G) = E - N + 2 \\
-v(G) = 8 - 7 + 2
-v(G) = 3
+v(G) = 9 - 8 + 2
 $$
   
 Numero de decisiones
 $$
 v(G) = P + 1 \\
 v(G) = 2 + 1
-v(G) = 3
 $$
 
 ### Casos de prueba
 
 | | Camino   | Entrada   | TC | Salida  |
 | --- | --- | --- | --- | --- |
-| 1 | I 1 2 3 4 3 5 F | `disciplineId` existe y existen atletas registrados en esa disciplina | `disciplineId = 1` | `[{atObj1,athObj2}]` |
-| 2 | I 1 2 3 5 F | `disciplineId` existe pero no existen atletas registrados en esa disciplina | `disciplineId = 2` | `[]` |
-| 3 | I 1 F | `disciplineId` no existe | `disciplineId = 87` | `throw NotFoundElementException($"Discipline with id {disciplineId} was not found")` |
-
-1. Verificar que cuando el `disciplineId=1` el tamaño de la lista retornada es `1`
-2. Verificar que cuando el `disciplineId=2` el tamaño de la lista retornada es `0` (empty)
-3. Verificar que cuando el `disciplineId=87` se lanza una excepcion de `NotFoundElementException` con el mensaje `Discipline with id 87 was not found`
+| 1 | I 1 3 5 6 F | `disciplineId` valid or invalid (throw not expected exception) | `disciplineId = 87` | `Status Code: 500` |
+| 2 | I 1 3 4 F | `disciplineId` invalid  | `disciplineId = 87` | `Status Code: 404` |
+| 3 | I 1 2 F | `disciplineId` valid  | `disciplineId = 1` | `Status Code: 200` `[{},{},...]` |
 
 Camino 1
 ```mermaid
 graph TD
-    I(I):::c1 --> 1(1)
-    1:::c1 --> 2(2)
-    1 --> F
-    2:::c1 --> 3(3)
-    3:::c1 --> 4(4)
-    4:::c1 --> 3
+    I(I):::c1 --> 1{1}
+    1 --> 2(2)
+    1:::c1 --> 3{3}
+    3:::c1 --> 4(4)
     3 --> 5(5)
-    5:::c1 --> F(F):::c1
-    classDef c1 fill:#F2274C, stroke:#F2274C;
+    5:::c1 --> 6(6)
+    2 --> F(F)
+    4 --> F(F)
+    6:::c1 --> F(F):::c1
+classDef c1 fill:#F2274C, stroke:#F2274C;
 ```
 
 Camino 2
 ```mermaid
 graph TD
-    I(I):::c1 --> 1(1)
-    1:::c1 --> 2(2)
-    1 --> F
-    2:::c1 --> 3(3)
-    3:::c1 --> 4(4)
-    4 --> 3
+    I(I):::c2 --> 1{1}
+    1 --> 2(2)
+    1:::c2 --> 3{3}
+    3:::c2 --> 4(4)
     3 --> 5(5)
-    5:::c1 --> F(F):::c1
-classDef c1 fill:#2964D9, stroke:#2964D9;
+    5 --> 6(6)
+    2 --> F(F)
+    4:::c2 --> F(F)
+    6 --> F(F):::c2
+classDef c2 fill:#2964D9, stroke:#2964D9;
 ```
 
 Camino 3
 ```mermaid
 graph TD
-    I(I):::c1 --> 1(1)
-    1:::c1 --> 2(2)
-    1 --> F
-    2 --> 3(3)
-    3 --> 4(4)
-    4 --> 3
+    I(I):::c3 --> 1{1}
+    1 --> 2(2)
+    1:::c3 --> 3{3}
+    3 --> 4(4)
     3 --> 5(5)
-    5 --> F(F):::c1
-classDef c1 fill:#B2A2FA, stroke:#B2A2FA;
+    5 --> 6(6)
+    2:::c3 --> F(F)
+    4 --> F(F)
+    6 --> F(F):::c3
+classDef c3 fill:#B2A2FA, stroke:#B2A2FA;
 ```
-
-### Peculiaridad
-
-Al realizar las pruebas para este metodo se observo que con el test case 1 se lograba el 100% de statement coverage del metodo. Sin embargo, solo con ese tc no se esta probando los paths "ocultos" del tc2 y tc3
 
 ### Pruebas unitarias
 
@@ -308,89 +302,72 @@ Al realizar las pruebas para este metodo se observo que con el test case 1 se lo
 //GetAthletesAsync
 //tc1
 [Fact]
-public async Task GetAthletesAsync_DisciplineIdValidAndExistAthletes_ReturnsListOfAthletes()
+public async Task GetAthletesAsync_ReturnsStatusCode500()
 {
-    int disciplineId = 1;
+    int disciplineId = 87;
+    var serviceMock = new Mock<IAthleteService>();
 
-    var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
-    var mapper = config.CreateMapper();
-    var athleteModel = new AthleteEntity()
+    serviceMock.Setup(serv => serv.GetAthletesAsync(disciplineId))
+        .Throws(new Exception("Something happened"));
+
+    var fileService = new FileService();
+    var athletesController = new AthletesController(serviceMock.Object, fileService);
+
+    var response = await athletesController.GetAthletesAsync(disciplineId);
+    var athletesList = response.Value as List<ShortAthleteModel>;
+    var actualStatusCode = ((ObjectResult)response.Result).StatusCode;
+
+    Assert.Equal(500, actualStatusCode);
+}
+//tc2
+[Fact]
+public async Task GetAthletesAsync_ReturnsStatusCode404()
+{
+    int athleteId = 95;
+    int disciplineId = 87;
+    var serviceMock = new Mock<IAthleteService>();
+
+    serviceMock.Setup(serv => serv.GetAthletesAsync(disciplineId))
+        .Throws(new NotFoundElementException($"Athlete with id {athleteId} does not exist in discipline {disciplineId}"));
+
+    var fileService = new FileService();
+    var athletesController = new AthletesController(serviceMock.Object, fileService);
+
+    var response = await athletesController.GetAthletesAsync(disciplineId);
+    var athletesList = response.Value as List<ShortAthleteModel>;
+    var actualStatusCode = ((NotFoundObjectResult) response.Result).StatusCode;
+
+    Assert.Equal(404, actualStatusCode);
+}
+//tc3
+[Fact]
+public async Task GetAthletesAsync_ReturnsListOfAthletes()
+{
+    int disciplinedId = 1;
+    int statusCodeExpected = 200;
+    var athleteModel = new ShortAthleteModel()
     {
         Id = 95,
         Name = "Juan",
         Nationality = "Boliviano",
         NumberOfCompetitions = 1,
+        DisciplineId = disciplinedId,
         Gender = Gender.M,
         PersonalBest = 125,
         SeasonBest = 125,
     };
-    var disciplineEntity100M = new DisciplineEntity()
-    {
-        Id = 1,
-        Name = "100M"
-    };
+    var athletesEnumerable = new List<ShortAthleteModel>() { athleteModel } as IEnumerable<ShortAthleteModel>;
+    var serviceMock = new Mock<IAthleteService>();
 
-    var athletesEntityEnumerable = new List<AthleteEntity>() { athleteModel } as IEnumerable<AthleteEntity>;
-    var repositoryMock = new Mock<IAthleteRepository>();
-    repositoryMock.Setup(r => r.GetDisciplineAsync(disciplineId, false)).ReturnsAsync(disciplineEntity100M);
-    repositoryMock.Setup(r => r.GetAthletesAsync(disciplineId)).ReturnsAsync(athletesEntityEnumerable);
+    serviceMock.Setup(serv => serv.GetAthletesAsync(disciplinedId)).ReturnsAsync(athletesEnumerable);
 
-    var athleteService = new AthleteService(repositoryMock.Object, mapper);
-    var athletesList = await athleteService.GetAthletesAsync(disciplineId);
+    var fileService = new FileService();
+    var athletesController = new AthletesController(serviceMock.Object,fileService);
 
-    int expectedListSize = 1;
+    var response = await athletesController.GetAthletesAsync(disciplinedId);
+    var athletesList = response.Value as List<ShortAthleteModel>;
+    var actualStatusCode = ((OkObjectResult) response.Result).StatusCode;
 
-    Assert.Equal(expectedListSize, athletesList.Count());
-}
-
-//tc2
-[Fact]
-public async Task GetAthletesAsync_DisciplineIdValidAndNotExistAthletes_ReturnsEmptyList()
-{
-    int disciplineId = 2;
-
-    var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
-    var mapper = config.CreateMapper();
-    var disciplineEntity100M = new DisciplineEntity()
-    {
-        Id = 1,
-        Name = "100M"
-    };
-    var athletesEntityEnumerable = new List<AthleteEntity>() as IEnumerable<AthleteEntity>;
-    
-    var repositoryMock = new Mock<IAthleteRepository>();
-    repositoryMock.Setup(r => r.GetDisciplineAsync(disciplineId, false)).ReturnsAsync(disciplineEntity100M);
-    repositoryMock.Setup(r => r.GetAthletesAsync(disciplineId)).ReturnsAsync(athletesEntityEnumerable);
-
-    var athleteService = new AthleteService(repositoryMock.Object, mapper);
-    var athletesList = await athleteService.GetAthletesAsync(disciplineId);
-
-    Assert.Empty(athletesList);
-}
-
-//tc3
-[Fact]
-public async Task GetAthletesAsync_DisciplineIdNotExist_ThrowsNotFoundElementException()
-{
-    int disciplineId = 87;
-
-    var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
-    var mapper = config.CreateMapper();
-    var disciplineEntity100M = new DisciplineEntity()
-    {
-        Id = 1,
-        Name = "100M"
-    };
-    var athletesEntityEnumerable = new List<AthleteEntity>() as IEnumerable<AthleteEntity>;
-
-    var repositoryMock = new Mock<IAthleteRepository>();
-    repositoryMock.Setup(r => r.GetDisciplineAsync(disciplineId, false)).ThrowsAsync(new NotFoundElementException($"Discipline with id {disciplineId} was not found"));
-    repositoryMock.Setup(r => r.GetAthletesAsync(disciplineId)).ReturnsAsync(athletesEntityEnumerable);
-
-    var athleteService = new AthleteService(repositoryMock.Object, mapper);
-
-
-    NotFoundElementException exception = await Assert.ThrowsAsync<NotFoundElementException>(() => athleteService.GetAthletesAsync(disciplineId));
-    Assert.Equal("Discipline with id 87 was not found", exception.Message);
+    Assert.Equal(statusCodeExpected,actualStatusCode);
 }
 ```
