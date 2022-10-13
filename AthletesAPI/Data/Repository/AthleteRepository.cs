@@ -303,14 +303,12 @@ namespace AthletesRestAPI.Data.Repository
 
         public async Task<bool> DeleteDisciplineAsync(int disciplineId)
         {
-            //IQueryable<DisciplineEntity> query = _dbContext.Disciplines;
             var disciplineToDelete = await _dbContext.Disciplines.FirstOrDefaultAsync(d => d.Id == disciplineId);
             var athletesFromDiscipline =  await GetAthletesAsync(disciplineId);
             foreach(var athlete in athletesFromDiscipline)
             {
                 await DeleteAthleteAsync(athlete.Id, disciplineId);
             }
-           // _dbContext.Entry(disciplineToDelete).State = EntityState.Deleted;
             _dbContext.Disciplines.Remove(disciplineToDelete);
             return true;
         }

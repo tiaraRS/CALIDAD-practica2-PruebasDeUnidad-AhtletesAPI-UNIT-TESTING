@@ -29,7 +29,7 @@ namespace UnitTesting.ServicesUT
             };
             var disciplineEntity200M = new DisciplineEntity()
             {
-                Id = 1,
+                Id = 2,
                 Name = "200M"               
             };
             var disciplinesEnumerable = new List<DisciplineEntity>() { disciplineEntity100M, disciplineEntity200M } as IEnumerable<DisciplineEntity>;
@@ -38,8 +38,11 @@ namespace UnitTesting.ServicesUT
 
             var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
             var disciplinesList = await disciplinesService.GetDisciplinesAsync();
+            Assert.NotNull(disciplinesList);
             Assert.NotEmpty(disciplinesList);
             Assert.Equal(2,disciplinesList.Count());
+            Assert.Equal("100M", disciplinesList.First().Name);
+            Assert.Equal("200M", disciplinesList.Last().Name);
         }
         //GetDisciplineAsync
         //tc1
@@ -73,14 +76,20 @@ namespace UnitTesting.ServicesUT
             var disciplineFromDB = await disciplinesService.GetDisciplineAsync(1);
 
             Assert.NotNull(disciplineFromDB);
-            Assert.True("100M" == disciplineFromDB.Name);
             Assert.IsType<DisciplineModel>(disciplineFromDB);
+            Assert.True(1 == disciplineFromDB.Id);
+            Assert.True("100M" == disciplineFromDB.Name);
+            Assert.Empty(disciplineFromDB.Athletes);
+            Assert.Null(disciplineFromDB.Rules);
+            Assert.Null(disciplineFromDB.CreationDate);
+            Assert.Null(disciplineFromDB.FemaleWorldRecord);
+            Assert.Null(disciplineFromDB.MaleWorldRecord);
         }
 
         //DeleteDisciplineAsync
         //tc1
         [Fact]
-        public async Task DeleteDisciplineAsync_ValidId_ReuturnsDBException()
+        public void DeleteDisciplineAsync_ValidId_ReuturnsDBException()
         {
             var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
             var mapper = config.CreateMapper();
@@ -151,20 +160,27 @@ namespace UnitTesting.ServicesUT
             var mapper = config.CreateMapper();
             var longJumpDisciplineEntity = new DisciplineEntity()
             {
+                Id = 1,
                 Name = "Long Jump"
             };
             var longJumpDisciplineModel = new DisciplineModel()
             {
-                Id=1,
                 Name = "Long Jump"
             };
             var repositoryMock = new Mock<IAthleteRepository>();
             repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
             repositoryMock.Setup(r => r.CreateDiscipline(longJumpDisciplineEntity));
             var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
-            var result = await disciplinesService.CreateDisciplineAsync(longJumpDisciplineModel);
-            Assert.NotNull(result);
-            Assert.Equal("Long Jump",result.Name);
+            var disciplineCreated = await disciplinesService.CreateDisciplineAsync(longJumpDisciplineModel);
+            Assert.NotNull(disciplineCreated);
+            Assert.Equal("Long Jump", disciplineCreated.Name);
+            Assert.Equal(0, disciplineCreated.Id);
+            Assert.Empty(disciplineCreated.Athletes);
+            Assert.Null(disciplineCreated.Rules);
+            Assert.Null(disciplineCreated.CreationDate);
+            Assert.Null(disciplineCreated.FemaleWorldRecord);
+            Assert.Null(disciplineCreated.MaleWorldRecord);
+            
         }
 
         //CheckPersonalBest
@@ -380,7 +396,6 @@ namespace UnitTesting.ServicesUT
             var disciplineId = 1;
             var gender = "k";
             var repositoryMock = new Mock<IAthleteRepository>();
-            //repositoryMock.Setup(d=>d.GetDisciplineAsync(1,true)).ReturnsAsync()
             var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
 
             var exception = Assert.ThrowsAsync<InvalidElementOperationException>(async () => await disciplinesService.GetWorldRankingsAsync(disciplineId, gender));
