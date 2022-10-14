@@ -17,7 +17,7 @@ namespace UnitTesting.AthleteRepositoryUT
         //GetAthleteAsync
         //tc1
         [Fact]
-        public async Task GetAthleteAsync_DisciplineIdValidAndExistAthletes_ReturnsListOfAthletes()
+        public async Task GetAthleteAsync_DisciplineAndAthleteExist_ReturnsAthlete()
         {
             int disciplineId = 1;
             int athleteId = 1;
@@ -33,10 +33,11 @@ namespace UnitTesting.AthleteRepositoryUT
             };
             var repository = new AthleteRepository(ctx);
             repository.CreateDiscipline(disciplineEntity100M);
+            var result = await repository.SaveChangesAsync();
+
 
             var athleteEntity = new AthleteEntity()
             {
-                Id = athleteId,
                 Name = "Juan",
                 Nationality = "Boliviano",
                 NumberOfCompetitions = 1,
@@ -51,7 +52,7 @@ namespace UnitTesting.AthleteRepositoryUT
             };
             
             repository.CreateAthlete(athleteEntity,disciplineId);
-            var result = await repository.SaveChangesAsync();
+            result = await repository.SaveChangesAsync();
 
             
             var athlete = await repository.GetAthleteAsync(athleteId, disciplineId);
