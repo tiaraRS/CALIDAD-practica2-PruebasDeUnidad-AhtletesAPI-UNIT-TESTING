@@ -25,12 +25,12 @@ namespace UnitTesting.ServicesUT
             var disciplineEntity100M = new DisciplineEntity()
             {
                 Id = 1,
-                Name = "100M"              
+                Name = "100M"
             };
             var disciplineEntity200M = new DisciplineEntity()
             {
                 Id = 2,
-                Name = "200M"               
+                Name = "200M"
             };
             var disciplinesEnumerable = new List<DisciplineEntity>() { disciplineEntity100M, disciplineEntity200M } as IEnumerable<DisciplineEntity>;
             var repositoryMock = new Mock<IAthleteRepository>();
@@ -40,7 +40,7 @@ namespace UnitTesting.ServicesUT
             var disciplinesList = await disciplinesService.GetDisciplinesAsync();
             Assert.NotNull(disciplinesList);
             Assert.NotEmpty(disciplinesList);
-            Assert.Equal(2,disciplinesList.Count());
+            Assert.Equal(2, disciplinesList.Count());
             Assert.Equal("100M", disciplinesList.First().Name);
             Assert.Equal("200M", disciplinesList.Last().Name);
         }
@@ -69,7 +69,7 @@ namespace UnitTesting.ServicesUT
             {
                 Id = 1,
                 Name = "100M"
-            };           
+            };
             var repositoryMock = new Mock<IAthleteRepository>();
             repositoryMock.Setup(r => r.GetDisciplineAsync(1, false)).ReturnsAsync(disciplineEntity100M);
             var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
@@ -99,11 +99,11 @@ namespace UnitTesting.ServicesUT
                 Name = "100M"
             };
             var repositoryMock = new Mock<IAthleteRepository>();
-            
+
             repositoryMock.Setup(r => r.DeleteDisciplineAsync(100));
             repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(false);
             repositoryMock.Setup(r => r.GetDisciplineAsync(100, false)).ReturnsAsync(disciplineEntity100M);
-            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);            
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
 
             var exception = Assert.ThrowsAsync<Exception>(async () => await disciplinesService.DeleteDisciplineAsync(100));
             Assert.Equal("Database Error", exception.Result.Message);
@@ -124,7 +124,7 @@ namespace UnitTesting.ServicesUT
             repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
             repositoryMock.Setup(r => r.GetDisciplineAsync(1, false)).ReturnsAsync(disciplineEntity100M);
             var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
-            var result = await disciplinesService.DeleteDisciplineAsync(1);      
+            var result = await disciplinesService.DeleteDisciplineAsync(1);
             Assert.True(result);
         }
 
@@ -141,10 +141,10 @@ namespace UnitTesting.ServicesUT
             };
             var longJumpDisciplineModel = new DisciplineModel()
             {
-                
+
                 Name = "Long Jump"
             };
-            var repositoryMock = new Mock<IAthleteRepository>();           
+            var repositoryMock = new Mock<IAthleteRepository>();
             repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(false);
             repositoryMock.Setup(r => r.CreateDiscipline(longJumpDisciplineEntity));
             var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
@@ -160,7 +160,7 @@ namespace UnitTesting.ServicesUT
             var mapper = config.CreateMapper();
             var longJumpDisciplineEntity = new DisciplineEntity()
             {
-                Id = 1,
+                Id = 0,
                 Name = "Long Jump"
             };
             var longJumpDisciplineModel = new DisciplineModel()
@@ -180,7 +180,7 @@ namespace UnitTesting.ServicesUT
             Assert.Null(disciplineCreated.CreationDate);
             Assert.Null(disciplineCreated.FemaleWorldRecord);
             Assert.Null(disciplineCreated.MaleWorldRecord);
-            
+
         }
 
         //CheckPersonalBest
@@ -192,15 +192,20 @@ namespace UnitTesting.ServicesUT
             var mapper = config.CreateMapper();
             var sydney = new AthleteModel()
             {
-                Id=1,Nationality="USA", Name="Sydney Maclaughlin", Gender=Gender.F, Points=1000, PersonalBest=52.75m
+                Id = 1,
+                Nationality = "USA",
+                Name = "Sydney Maclaughlin",
+                Gender = Gender.F,
+                Points = 1000,
+                PersonalBest = 52.75m
             };
             var mark = 53.05m;
             string discipline = "400MH";
             var repositoryMock = new Mock<IAthleteRepository>();
             var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
 
-            var result = disciplinesService.CheckPersonalBest(sydney,mark, discipline);
-            Assert.False(result);            
+            var result = disciplinesService.CheckPersonalBest(sydney, mark, discipline);
+            Assert.False(result);
         }
 
         //tc2
@@ -248,7 +253,7 @@ namespace UnitTesting.ServicesUT
             var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
 
             var result = disciplinesService.Mark(sydney);
-            Assert.InRange(result, 52.55m, 52.94m);// Random.Next(inclusivo, exclusivo) - InRange(
+            Assert.InRange(result, 52.55m, 52.94m);// Random.Next(inclusivo, exclusivo) - InRange(inclusivo, inclusivo)
         }
 
         //tc2
@@ -271,9 +276,8 @@ namespace UnitTesting.ServicesUT
             var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
 
             var result = disciplinesService.Mark(sydney);
-            Assert.InRange(result, 52.55m, 53.24m);// Random.Next(inclusivo, exclusivo) - InRange(
+            Assert.InRange(result, 52.55m, 53.24m);
         }
-
 
         //CheckSeasonBest
         //tc1
@@ -297,9 +301,10 @@ namespace UnitTesting.ServicesUT
             var repositoryMock = new Mock<IAthleteRepository>();
             var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
 
-            var result = disciplinesService.CheckSeasonBest(sydney,mark,disciplineName);
+            var result = disciplinesService.CheckSeasonBest(sydney, mark, disciplineName);
             Assert.True(result);
         }
+
         //tc2
         [Fact]
         public void CheckSesasonBest_SeasonBestImproved_ReturnsTrue()
@@ -354,36 +359,18 @@ namespace UnitTesting.ServicesUT
         }
 
         //UpdateWorldRecord
-        //tc1
-        [Fact]
-        public async Task UpdateWorldRecord_ReturnsTrue()
+        [Theory]
+        [InlineData(1, 51.7, "f")] //tc1
+        [InlineData(1, 51.7, "m")] //tc2    
+        public async Task UpdateWorldRecord_ReturnsTrue(int disciplineId, Decimal worldRecord, string gender)
         {
             var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
             var mapper = config.CreateMapper();
-            var disciplineId = 1;
-            var worldRecord = 51.7m;
-            var gender = "f";
             var repositoryMock = new Mock<IAthleteRepository>();
             var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
 
             var result = await disciplinesService.updateWorldRecord(disciplineId, worldRecord, gender);
             Assert.False(result);
-        }
-
-        //tc2
-        [Fact]
-        public async Task UpdateWorldRecord_ReturnsFalse()
-        {
-            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
-            var mapper = config.CreateMapper();
-            var disciplineId = 1;
-            var worldRecord = 51.7m;
-            var gender = "m";
-            var repositoryMock = new Mock<IAthleteRepository>();
-            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
-
-            var result = await disciplinesService.updateWorldRecord(disciplineId, worldRecord, gender);
-            Assert.False(result);            
         }
 
         //GetWorldRankingAsync
@@ -424,16 +411,16 @@ namespace UnitTesting.ServicesUT
                     }
                 });
             var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
-            
+
             var worldRankings = await disciplinesService.GetWorldRankingsAsync(disciplineId, gender);
             Assert.NotNull(worldRankings);
             Assert.NotEmpty(worldRankings);
-            Assert.Equal(2,worldRankings.Count());
+            Assert.Equal(2, worldRankings.Count());
             Assert.Contains(worldRankings, athlete => athlete.Id == 1);
             Assert.Contains(worldRankings, athlete => athlete.Id == 2);
             Assert.DoesNotContain(worldRankings, athlete => athlete.Id == 3);
-            Assert.All(worldRankings, athlete => Assert.Equal(Gender.F,athlete.Gender));
-            
+            Assert.All(worldRankings, athlete => Assert.Equal(Gender.F, athlete.Gender));
+
         }
         //tc3
         [Fact]
@@ -465,8 +452,8 @@ namespace UnitTesting.ServicesUT
             Assert.Contains(worldRankings, athlete => athlete.Id == 1);
             Assert.Contains(worldRankings, athlete => athlete.Id == 2);
             Assert.Contains(worldRankings, athlete => athlete.Id == 3);
-            Assert.Equal("Usain Bolt",worldRankings.First().Name);
-            Assert.Equal("Sydney Maclaughlin", worldRankings.Last().Name);            
+            Assert.Equal("Usain Bolt", worldRankings.First().Name);
+            Assert.Equal("Sydney Maclaughlin", worldRankings.Last().Name);
         }
         //CheckWorldRecord
         //tc1
@@ -489,7 +476,7 @@ namespace UnitTesting.ServicesUT
 
             Assert.True(result);
             Assert.NotEqual(-1, worldRecord);
-            Assert.Equal(51.8m, worldRecord);            
+            Assert.Equal(51.8m, worldRecord);
         }
 
         //tc2
@@ -561,7 +548,7 @@ namespace UnitTesting.ServicesUT
             Assert.Equal(8.98m, bestMark);
         }
 
-        //tc4
+        //tc5
         [Fact]
         public void CheckWorldRecord_InvalidGender_ReturnsFalse()
         {
@@ -579,7 +566,7 @@ namespace UnitTesting.ServicesUT
             var bestMark = -1m;
             var result = disciplinesService.checkWorldRecord(gender, discipline, competingResults, out bestMark);
 
-            Assert.False(result);            
+            Assert.False(result);
         }
 
         //DisciplineService.UpdateDisciplineAsync
@@ -620,7 +607,7 @@ namespace UnitTesting.ServicesUT
             repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(false);
             repositoryMock.Setup(r => r.GetDisciplineAsync(1, false)).ReturnsAsync(disciplineEntityBeforeChanges);
 
-            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);            
+            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
             var exception = Assert.ThrowsAsync<Exception>(async () => await disciplinesService.UpdateDisciplineAsync(disciplineId, disciplineModel));
             Assert.Equal("Database Error", exception.Result.Message);
         }
@@ -644,9 +631,9 @@ namespace UnitTesting.ServicesUT
                 new AthleteEntity(){ Id = 1, Name = "Usain Bolt", Gender = Gender.M, IsActive = true, SeasonBest = 9.37m, PersonalBest = 9.37m
                 } });
             repositoryMock.Setup(r => r.GetDisciplineAsync(1, false)).ReturnsAsync(disciplineEntity);
-            
+
             var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
-            var exception = Assert.ThrowsAsync<Exception>(async () => await disciplinesService.RaceAsync(disciplineId,gender,podium));
+            var exception = Assert.ThrowsAsync<Exception>(async () => await disciplinesService.RaceAsync(disciplineId, gender, podium));
             Assert.Equal("Database Error", exception.Result.Message);
         }
 
@@ -674,7 +661,7 @@ namespace UnitTesting.ServicesUT
             Assert.Single(competingResults.AthletesRaceInfo);
             Assert.Contains(competingResults.AthletesRaceInfo, athlete => athlete.Id == 1);
             Assert.Contains(competingResults.AthletesRaceInfo, athlete => athlete.Name == "Usain Bolt");
-            Assert.True(competingResults.WorldRecord);        
+            Assert.True(competingResults.WorldRecord);
         }
         //tc3
         [Fact]
@@ -770,7 +757,7 @@ namespace UnitTesting.ServicesUT
             var mapper = config.CreateMapper();
             var disciplineId = 1;
             var repositoryMock = new Mock<IAthleteRepository>();
-        
+
             var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
             var exception = Assert.ThrowsAsync<IncompleteRequestException>(async () => await disciplinesService.RaceAsync(disciplineId));
             Assert.Equal("Unable to complete request. Please specify gender as param", exception.Result.Message);

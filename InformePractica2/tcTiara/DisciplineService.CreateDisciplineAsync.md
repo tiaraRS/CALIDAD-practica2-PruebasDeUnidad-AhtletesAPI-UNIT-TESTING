@@ -53,7 +53,7 @@ $$
 | | Camino   | Entrada   | TC | Salida  |
 | --- | --- | --- | --- | --- |
 | 1 | I-1a-2b-3c-F | `discipline` new DisciplineModel() { Name = "Long Jump"}; | RepositoryMock.SaveChangesAsync returns false -> result=false  | throws exception("Database error") |
-| 2 | I-1a-2d-F | `discipline` new DisciplineModel() { Name = "Long Jump"};|  RepositoryMock returns true -> result = true | return  DisciplineModel() { Id=1, Name = "Long Jump"};|
+| 2 | I-1a-2d-F | `discipline` new DisciplineModel() { Name = "Long Jump"};|  RepositoryMock returns true -> result = true | return  DisciplineModel() { Id=0, Name = "Long Jump"};|
 
 TC1: verificar que si hay error de base de datos al crear una disciplina, se lance una excepción con el mensaje "Database error".
 
@@ -113,11 +113,11 @@ classDef c2 fill:#2964D9, stroke:#2964D9;
             var mapper = config.CreateMapper();
             var longJumpDisciplineEntity = new DisciplineEntity()
             {
+                Id = 0,
                 Name = "Long Jump"
             };
             var longJumpDisciplineModel = new DisciplineModel()
             {
-                Id=1,
                 Name = "Long Jump"
             };
             var repositoryMock = new Mock<IAthleteRepository>();
@@ -127,7 +127,7 @@ classDef c2 fill:#2964D9, stroke:#2964D9;
             var disciplineCreated = await disciplinesService.CreateDisciplineAsync(longJumpDisciplineModel);
             Assert.NotNull(disciplineCreated);
             Assert.Equal("Long Jump", disciplineCreated.Name);
-            Assert.Equal(1, disciplineCreated.Id);
+            Assert.Equal(0, disciplineCreated.Id);
             Assert.Empty(disciplineCreated.Athletes);
             Assert.Null(disciplineCreated.Rules);
             Assert.Null(disciplineCreated.CreationDate);
