@@ -131,7 +131,7 @@ namespace AthletesRestAPI.Services
             };
         }
 
-        public async Task DeleteAthleteAsync(int athleteId, int disciplineId)
+        public async Task<bool> DeleteAthleteAsync(int athleteId, int disciplineId)
         {
             await GetAthleteAsync(athleteId, disciplineId);
             await _athleteRepository.DeleteAthleteAsync(athleteId,disciplineId);
@@ -141,6 +141,7 @@ namespace AthletesRestAPI.Services
             {
                 throw new Exception("Database Error");
             }
+            return result;
             
         }
 

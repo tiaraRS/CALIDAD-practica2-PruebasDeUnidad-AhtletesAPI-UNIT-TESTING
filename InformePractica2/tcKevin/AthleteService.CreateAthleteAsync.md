@@ -53,7 +53,7 @@ $$ v(G) = 2 $$
 | | Camino   | Entrada   | TC | Salida  |
 | --- | --- | --- | --- | --- |
 | 1 | I 1 2 3 4 F |  `_athleteRepository.SaveChangesAsync();` retorna `result = false`  | `result = false` | `throw new Exception("Database Error");` |
-| 2 | I 1 2 5 F |  `_athleteRepository.SaveChangesAsync();` retorna `result = true`  | `result = false` | `new AthleteModel = {Id...}` |
+| 2 | I 1 2 5 F |  `_athleteRepository.SaveChangesAsync();` retorna `result = true`  | `result = true` | `new AthleteModel = {Id...}` |
 
 1. Verificar que si `_athleteRepository.SaveChangesAsync();` retorna `result = false`, entonces `CreateAthleteAsync`  lanza una excepción `throw new Exception("Database Error");`.
 2. Verificar que si `_athleteRepository.SaveChangesAsync();` retorna `result = true` (con `athleteId=1`, `disciplineId=1`) y athlete:

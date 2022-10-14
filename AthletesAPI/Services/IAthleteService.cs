@@ -11,7 +11,7 @@ namespace AthletesRestAPI.Services
         public Task<IEnumerable<ShortAthleteModel>> GetAthletesAsync(int disciplineId);
         public Task<AthleteModel> GetAthleteAsync(int athleteId, int disciplineId);
         public Task<AthleteModel> UpdateAthleteAsync(int athleteId, AthleteModel athlete, int disciplineId);
-        public Task DeleteAthleteAsync(int athleteId, int disciplineId);
+        public Task<bool> DeleteAthleteAsync(int athleteId, int disciplineId);
         public Task<AthleteModel> CreateAthleteAsync(AthleteModel athlete, int disciplineId);
 
         //public IEnumerable<Object> Race(string discipline, string gender, string podium);
