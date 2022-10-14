@@ -23,19 +23,31 @@ namespace UnitTesting.AthleteRepositoryUT
             int athleteId = 1;
             var disciplineEntity100M = new DisciplineEntity()
             {
+                Id = disciplineId,
                 Name = "100M",
+                CreationDate = DateTime.Now,
+                Rules = "fafasdfasf",
+                MaleWorldRecord = 125,
+                FemaleWorldRecord = 130,
+                ImagePath = "Faafdasfsd"
             };
             var repository = new AthleteRepository(ctx);
             repository.CreateDiscipline(disciplineEntity100M);
 
             var athleteEntity = new AthleteEntity()
             {
+                Id = athleteId,
                 Name = "Juan",
                 Nationality = "Boliviano",
                 NumberOfCompetitions = 1,
                 Gender = Gender.M,
                 PersonalBest = 125,
-                SeasonBest = 125
+                SeasonBest = 125,
+                Discipline = disciplineEntity100M,
+                BirthDate = DateTime.Now,
+                ImagePath = " ",
+                IsActive = false,
+                Points = 100
             };
             
             repository.CreateAthlete(athleteEntity,disciplineId);
