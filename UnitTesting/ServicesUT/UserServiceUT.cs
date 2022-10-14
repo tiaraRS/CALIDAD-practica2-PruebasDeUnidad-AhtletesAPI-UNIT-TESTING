@@ -177,9 +177,9 @@ namespace UnitTesting.ServicesUT
             //ARRANGE
             var registerModel = new RegisterViewModel()
             {
-                Email="testmail@gmail.com", 
-                Password="SecretPass1234", 
-                ConfirmPassword="NoPass1234"
+                Email = "testmail@gmail.com",
+                Password = "SecretPass1234",
+                ConfirmPassword = "NoPass1234"
             };
 
             var userManagerMock = new Mock<UserManager<IdentityUser>>(Mock.Of<IUserStore<IdentityUser>>(), null, null, null, null, null, null, null, null);
@@ -234,12 +234,17 @@ namespace UnitTesting.ServicesUT
                 Password = "SecretPass1234",
                 ConfirmPassword = "SecretPass1234"
             };
+            var errors = new IdentityError[] {
+                new IdentityError() { Description="Error 1" },
+                new IdentityError() { Description="Error 2" }
+            };
+            var stringErrors = new String[] { "Error 1", "Error 2" };
 
             var userManagerMock = new Mock<UserManager<IdentityUser>>(Mock.Of<IUserStore<IdentityUser>>(), null, null, null, null, null, null, null, null);
             var roleManagerMock = new Mock<RoleManager<IdentityRole>>(Mock.Of<IRoleStore<IdentityRole>>(), null, null, null, null);
             var configurationMock = new Mock<IConfiguration>();
 
-            userManagerMock.Setup(x => x.CreateAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Failed(new IdentityError()));
+            userManagerMock.Setup(x => x.CreateAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Failed(errors));
 
             //ACT
             var userService = new UserService(userManagerMock.Object, roleManagerMock.Object, configurationMock.Object);
@@ -248,6 +253,70 @@ namespace UnitTesting.ServicesUT
             //ASSERT
             Assert.Equal("User did not create", response.Token);
             Assert.False(response.IsSuccess);
+            Assert.Equal(stringErrors, response.Errors);
         }
+
+        //CreateRoleAsync
+        //tc1
+        [Fact]
+        public async Task CreateRole_RoleCreated()
+        {
+            //ARRANGE
+            var roleModel = new CreateRoleViewModel()
+            {
+                Name = "Admin",
+                NormalizedName = "ADMIN"
+            };
+
+            var userManagerMock = new Mock<UserManager<IdentityUser>>(Mock.Of<IUserStore<IdentityUser>>(), null, null, null, null, null, null, null, null);
+            var roleManagerMock = new Mock<RoleManager<IdentityRole>>(Mock.Of<IRoleStore<IdentityRole>>(), null, null, null, null);
+            var configurationMock = new Mock<IConfiguration>();
+
+            roleManagerMock.Setup(x => x.CreateAsync(It.IsAny<IdentityRole>())).ReturnsAsync(IdentityResult.Success);
+
+            //ACT
+            var userService = new UserService(userManagerMock.Object, roleManagerMock.Object, configurationMock.Object);
+            var response = await userService.CreateRoleAsync(roleModel);
+
+            //ASSERT
+            Assert.Equal("Role created successfully!", response.Token);
+            Assert.True(response.IsSuccess);
+        }
+
+        //tc2
+        [Fact]
+        public async Task CreateRole_RoleFailedToCreate()
+        {
+            //ARRANGE
+            var roleModel = new CreateRoleViewModel()
+            {
+                Name = "NoRole",
+                NormalizedName = "NR"
+            };
+            var errors = new IdentityError[] {
+                new IdentityError() { Description="Error 1" },
+                new IdentityError() { Description="Error 2" }
+            };
+            var stringErrors = new String[] { "Error 1", "Error 2" };
+
+            var userManagerMock = new Mock<UserManager<IdentityUser>>(Mock.Of<IUserStore<IdentityUser>>(), null, null, null, null, null, null, null, null);
+            var roleManagerMock = new Mock<RoleManager<IdentityRole>>(Mock.Of<IRoleStore<IdentityRole>>(), null, null, null, null);
+            var configurationMock = new Mock<IConfiguration>();
+
+
+            roleManagerMock.Setup(x => x.CreateAsync(It.IsAny<IdentityRole>())).ReturnsAsync(IdentityResult.Failed(errors));
+
+            //ACT
+            var userService = new UserService(userManagerMock.Object, roleManagerMock.Object, configurationMock.Object);
+            var response = await userService.CreateRoleAsync(roleModel);
+
+            //ASSERT
+            Assert.Equal("Role did not create", response.Token);
+            Assert.False(response.IsSuccess);
+            Assert.Equal(stringErrors, response.Errors);
+        }
+
+        //CreateUserRoleAsync
+        //tc1
     }
 }
