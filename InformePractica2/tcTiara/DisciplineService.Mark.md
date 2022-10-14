@@ -1,5 +1,4 @@
-DisciplineService.Mark
-## DisciplineService.CheckSeasonBest
+## DisciplineService.Mark
 
 ### Código
 
@@ -91,48 +90,48 @@ classDef c2 fill:#2964D9, stroke:#2964D9;
 
 ```csharp
 //tc1
-        [Fact]
-        public void Mark_ReturnsAthleteMark_SeasonBestIncluded()
-        {
-            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
-            var mapper = config.CreateMapper();
-            var sydney = new AthleteModel()
-            {
-                Id = 1,
-                Nationality = "USA",
-                Name = "Sydney Maclaughlin",
-                Gender = Gender.F,
-                Points = 1000,
-                PersonalBest = 52.75m,
-                SeasonBest = 52.75m
-            };
-            var repositoryMock = new Mock<IAthleteRepository>();
-            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+[Fact]
+public void Mark_ReturnsAthleteMark_SeasonBestIncluded()
+{
+	var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+	var mapper = config.CreateMapper();
+	var sydney = new AthleteModel()
+	{
+		Id = 1,
+		Nationality = "USA",
+		Name = "Sydney Maclaughlin",
+		Gender = Gender.F,
+		Points = 1000,
+		PersonalBest = 52.75m,
+		SeasonBest = 52.75m
+	};
+	var repositoryMock = new Mock<IAthleteRepository>();
+	var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
 
-            var result = disciplinesService.Mark(sydney);
-            Assert.InRange(result, 52.55m, 52.94m);// Random.Next(inclusivo, exclusivo) - InRange(inclusivo, inclusivo)
-        }
+	var result = disciplinesService.Mark(sydney);
+	Assert.InRange(result, 52.55m, 52.94m);// Random.Next(inclusivo, exclusivo) - InRange(inclusivo, inclusivo)
+}
 
-        //tc2
-        [Fact]
-        public void Mark_ReturnsAthleteMark_NoSeasonBest()
-        {
-            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
-            var mapper = config.CreateMapper();
-            var sydney = new AthleteModel()
-            {
-                Id = 1,
-                Nationality = "USA",
-                Name = "Sydney Maclaughlin",
-                Gender = Gender.F,
-                Points = 1000,
-                PersonalBest = 52.75m,
-                SeasonBest = null
-            };
-            var repositoryMock = new Mock<IAthleteRepository>();
-            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+//tc2
+[Fact]
+public void Mark_ReturnsAthleteMark_NoSeasonBest()
+{
+	var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+	var mapper = config.CreateMapper();
+	var sydney = new AthleteModel()
+	{
+		Id = 1,
+		Nationality = "USA",
+		Name = "Sydney Maclaughlin",
+		Gender = Gender.F,
+		Points = 1000,
+		PersonalBest = 52.75m,
+		SeasonBest = null
+	};
+	var repositoryMock = new Mock<IAthleteRepository>();
+	var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
 
-            var result = disciplinesService.Mark(sydney);
-            Assert.InRange(result, 52.55m, 53.24m);
-        }
+	var result = disciplinesService.Mark(sydney);
+	Assert.InRange(result, 52.55m, 53.24m);
+}
 ```

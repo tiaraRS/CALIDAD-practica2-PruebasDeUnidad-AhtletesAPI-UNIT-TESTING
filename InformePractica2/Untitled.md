@@ -1,13 +1,8 @@
-# Pruebas de Unidad y Cobertura de Código
-## Índice
-## 1. Objetivos
-### 1.1. Objetivo general 
-### 1.2. Objetivos específicos
-## 2. xUnit framework
-## 3. Code coverage tool
-### 3.1 Conclusiones y elección final
-### 3.2. Guía de instalación y uso Coverlet
-#### Prerrequisitos
+
+# 3. Code coverage tool
+## 3.1 Conclusiones y elección final
+## 3.2. Guía de instalación y uso Coverlet
+### Prerrequisitos
 - Tener instalado `dotnet`
 - Tener creado un proyecto de testing
 #### Instalación

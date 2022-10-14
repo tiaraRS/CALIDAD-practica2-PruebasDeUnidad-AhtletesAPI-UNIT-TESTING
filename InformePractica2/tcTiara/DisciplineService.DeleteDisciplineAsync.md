@@ -4,34 +4,34 @@
 
 ```csharp
 public async Task DeleteDisciplineAsync(int disciplineId)
-        {
-           await GetDisciplineAsync(disciplineId); //1
-           await _athleteRepository.DeleteDisciplineAsync(disciplineId); //1
-           var result = await _athleteRepository.SaveChangesAsync(); //1
-            if (!result) //2
-            {
-                throw new Exception("Database Error"); //3
-            }           
-        }
+{
+   await GetDisciplineAsync(disciplineId); //1
+   await _athleteRepository.DeleteDisciplineAsync(disciplineId); //1
+   var result = await _athleteRepository.SaveChangesAsync(); //1
+	if (!result) //2
+	{
+		throw new Exception("Database Error"); //3
+	}           
+}
 ```
-    Se notó que el código original no devolvía nada. Era de tipo void, por lo tanto se refactorizó el código para poder probarlo correctamente:
+Se notó que el código original no devolvía nada. Era de tipo void, por lo tanto se refactorizó el código para poder probarlo correctamente:
 #### Código Refactorizado:
 
 ```csharp
 // SERVICIO
 public async Task<bool> DeleteDisciplineAsync(int disciplineId)
-    {
-        bool deleted = false;
-        await GetDisciplineAsync(disciplineId);
-        deleted = await _athleteRepository.DeleteDisciplineAsync(disciplineId);
-        var result = await _athleteRepository.SaveChangesAsync();
-        if (!result)
-        {
-            throw new Exception("Database Error");
-        }
-        return deleted;
-        
-    }
+{
+	bool deleted = false;
+	await GetDisciplineAsync(disciplineId);
+	deleted = await _athleteRepository.DeleteDisciplineAsync(disciplineId);
+	var result = await _athleteRepository.SaveChangesAsync();
+	if (!result)
+	{
+		throw new Exception("Database Error");
+	}
+	return deleted;
+	
+}
 ```
 ### Grafo
 
@@ -100,43 +100,43 @@ classDef c2 fill:#2964D9, stroke:#2964D9;
 
 ```csharp
 //tc1
-        [Fact]
-        public void DeleteDisciplineAsync_ValidId_ReuturnsDBException()
-        {
-            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
-            var mapper = config.CreateMapper();
-            var disciplineEntity100M = new DisciplineEntity()
-            {
-                Id = 100,
-                Name = "100M"
-            };
-            var repositoryMock = new Mock<IAthleteRepository>();
-            
-            repositoryMock.Setup(r => r.DeleteDisciplineAsync(100));
-            repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(false);
-            repositoryMock.Setup(r => r.GetDisciplineAsync(100, false)).ReturnsAsync(disciplineEntity100M);
-            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);            
+[Fact]
+public void DeleteDisciplineAsync_ValidId_ReuturnsDBException()
+{
+	var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+	var mapper = config.CreateMapper();
+	var disciplineEntity100M = new DisciplineEntity()
+	{
+		Id = 100,
+		Name = "100M"
+	};
+	var repositoryMock = new Mock<IAthleteRepository>();
+	
+	repositoryMock.Setup(r => r.DeleteDisciplineAsync(100));
+	repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(false);
+	repositoryMock.Setup(r => r.GetDisciplineAsync(100, false)).ReturnsAsync(disciplineEntity100M);
+	var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);            
 
-            var exception = Assert.ThrowsAsync<Exception>(async () => await disciplinesService.DeleteDisciplineAsync(100));
-            Assert.Equal("Database Error", exception.Result.Message);
-        }
-        //tc2
-        [Fact]
-        public async Task DeleteDisciplineAsync_ValidId_DeletesDisicpline()
-        {
-            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
-            var mapper = config.CreateMapper();
-            var disciplineEntity100M = new DisciplineEntity()
-            {
-                Id = 1,
-                Name = "100M"
-            };
-            var repositoryMock = new Mock<IAthleteRepository>();
-            repositoryMock.Setup(r => r.DeleteDisciplineAsync(1)).ReturnsAsync(true);
-            repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
-            repositoryMock.Setup(r => r.GetDisciplineAsync(1, false)).ReturnsAsync(disciplineEntity100M);
-            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
-            var result = await disciplinesService.DeleteDisciplineAsync(1);      
-            Assert.True(result);
-        }
+	var exception = Assert.ThrowsAsync<Exception>(async () => await disciplinesService.DeleteDisciplineAsync(100));
+	Assert.Equal("Database Error", exception.Result.Message);
+}
+//tc2
+[Fact]
+public async Task DeleteDisciplineAsync_ValidId_DeletesDisicpline()
+{
+	var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+	var mapper = config.CreateMapper();
+	var disciplineEntity100M = new DisciplineEntity()
+	{
+		Id = 1,
+		Name = "100M"
+	};
+	var repositoryMock = new Mock<IAthleteRepository>();
+	repositoryMock.Setup(r => r.DeleteDisciplineAsync(1)).ReturnsAsync(true);
+	repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
+	repositoryMock.Setup(r => r.GetDisciplineAsync(1, false)).ReturnsAsync(disciplineEntity100M);
+	var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+	var result = await disciplinesService.DeleteDisciplineAsync(1);      
+	Assert.True(result);
+}
 ```

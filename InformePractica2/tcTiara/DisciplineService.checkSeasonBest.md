@@ -4,18 +4,18 @@
 
 ```csharp
 public bool CheckSeasonBest(AthleteModel athlete, Decimal mark, string discipline)
-    {
-        bool seasonBest = _markComparer[discipline](athlete.SeasonBest, mark);//1
-        if (athlete.SeasonBest == null)//2
-        {
-            seasonBest = true;//3
-        }
-        if (seasonBest)//4
-        {
-            athlete.SeasonBest = mark;//5
-        }
-        return seasonBest;//6
-    }
+{
+	bool seasonBest = _markComparer[discipline](athlete.SeasonBest, mark);//1
+	if (athlete.SeasonBest == null)//2
+	{
+		seasonBest = true;//3
+	}
+	if (seasonBest)//4
+	{
+		athlete.SeasonBest = mark;//5
+	}
+	return seasonBest;//6
+}
   
 ```
 
@@ -116,76 +116,76 @@ classDef c3 fill:#B2A2FA, stroke:#B2A2FA;
 
 ```csharp
 //tc1
-        [Fact]
-        public void CheckSesasonBest_SeasonBestNull_ReturnsTrue()
-        {
-            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
-            var mapper = config.CreateMapper();
-            var sydney = new AthleteModel()
-            {
-                Id = 1,
-                Nationality = "USA",
-                Name = "Sydney Maclaughlin",
-                Gender = Gender.F,
-                Points = 1000,
-                PersonalBest = 52.75m,
-                SeasonBest = null
-            };
-            var disciplineName = "400MH";
-            var mark = 51.76m;
-            var repositoryMock = new Mock<IAthleteRepository>();
-            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+[Fact]
+public void CheckSesasonBest_SeasonBestNull_ReturnsTrue()
+{
+	var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+	var mapper = config.CreateMapper();
+	var sydney = new AthleteModel()
+	{
+		Id = 1,
+		Nationality = "USA",
+		Name = "Sydney Maclaughlin",
+		Gender = Gender.F,
+		Points = 1000,
+		PersonalBest = 52.75m,
+		SeasonBest = null
+	};
+	var disciplineName = "400MH";
+	var mark = 51.76m;
+	var repositoryMock = new Mock<IAthleteRepository>();
+	var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
 
-            var result = disciplinesService.CheckSeasonBest(sydney,mark,disciplineName);
-            Assert.True(result);
-        }
-        //tc2
-        [Fact]
-        public void CheckSesasonBest_SeasonBestImproved_ReturnsTrue()
-        {
-            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
-            var mapper = config.CreateMapper();
-            var sydney = new AthleteModel()
-            {
-                Id = 1,
-                Nationality = "USA",
-                Name = "Sydney Maclaughlin",
-                Gender = Gender.F,
-                Points = 1000,
-                PersonalBest = 52m,
-                SeasonBest = 51.79m
-            };
-            var disciplineName = "400MH";
-            var mark = 51.76m;
-            var repositoryMock = new Mock<IAthleteRepository>();
-            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+	var result = disciplinesService.CheckSeasonBest(sydney,mark,disciplineName);
+	Assert.True(result);
+}
+//tc2
+[Fact]
+public void CheckSesasonBest_SeasonBestImproved_ReturnsTrue()
+{
+	var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+	var mapper = config.CreateMapper();
+	var sydney = new AthleteModel()
+	{
+		Id = 1,
+		Nationality = "USA",
+		Name = "Sydney Maclaughlin",
+		Gender = Gender.F,
+		Points = 1000,
+		PersonalBest = 52m,
+		SeasonBest = 51.79m
+	};
+	var disciplineName = "400MH";
+	var mark = 51.76m;
+	var repositoryMock = new Mock<IAthleteRepository>();
+	var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
 
-            var result = disciplinesService.CheckSeasonBest(sydney, mark, disciplineName);
-            Assert.True(result);
-        }
+	var result = disciplinesService.CheckSeasonBest(sydney, mark, disciplineName);
+	Assert.True(result);
+}
 
-        //tc3
-        [Fact]
-        public void CheckSesasonBest_SeasonBestNotImproved_ReturnsFalse()
-        {
-            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
-            var mapper = config.CreateMapper();
-            var sydney = new AthleteModel()
-            {
-                Id = 1,
-                Nationality = "USA",
-                Name = "Sydney Maclaughlin",
-                Gender = Gender.F,
-                Points = 1000,
-                PersonalBest = 52.75m,
-                SeasonBest = 52m
-            };
-            var disciplineName = "400MH";
-            var mark = 52.79m;
-            var repositoryMock = new Mock<IAthleteRepository>();
-            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+//tc3
+[Fact]
+public void CheckSesasonBest_SeasonBestNotImproved_ReturnsFalse()
+{
+	var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+	var mapper = config.CreateMapper();
+	var sydney = new AthleteModel()
+	{
+		Id = 1,
+		Nationality = "USA",
+		Name = "Sydney Maclaughlin",
+		Gender = Gender.F,
+		Points = 1000,
+		PersonalBest = 52.75m,
+		SeasonBest = 52m
+	};
+	var disciplineName = "400MH";
+	var mark = 52.79m;
+	var repositoryMock = new Mock<IAthleteRepository>();
+	var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
 
-            var result = disciplinesService.CheckSeasonBest(sydney, mark, disciplineName);
-            Assert.False(result);
-        }
+	var result = disciplinesService.CheckSeasonBest(sydney, mark, disciplineName);
+	Assert.False(result);
+}
 ```

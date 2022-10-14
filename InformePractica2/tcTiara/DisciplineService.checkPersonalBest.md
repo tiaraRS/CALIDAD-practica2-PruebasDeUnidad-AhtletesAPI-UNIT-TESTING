@@ -82,50 +82,51 @@ graph TD
     3 --d--> 4(4)
     4 --e--> F(F):::c2
 classDef c2 fill:#2964D9, stroke:#2964D9;
+```
 
 ### Pruebas unitarias
 
 ```csharp
 //tc1
-        [Fact]
-        public void CheckPersonalBest_NoPersonalBest()
-        {
-            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
-            var mapper = config.CreateMapper();
-            var sydney = new AthleteModel()
-            {
-                Id=1,Nationality="USA", Name="Sydney Maclaughlin", Gender=Gender.F, Points=1000, PersonalBest=52.75m
-            };
-            var mark = 53.05m;
-            string discipline = "400MH";
-            var repositoryMock = new Mock<IAthleteRepository>();
-            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+[Fact]
+public void CheckPersonalBest_NoPersonalBest()
+{
+	var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+	var mapper = config.CreateMapper();
+	var sydney = new AthleteModel()
+	{
+		Id=1,Nationality="USA", Name="Sydney Maclaughlin", Gender=Gender.F, Points=1000, PersonalBest=52.75m
+	};
+	var mark = 53.05m;
+	string discipline = "400MH";
+	var repositoryMock = new Mock<IAthleteRepository>();
+	var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
 
-            var result = disciplinesService.CheckPersonalBest(sydney,mark, discipline);
-            Assert.False(result);            
-        }
+	var result = disciplinesService.CheckPersonalBest(sydney,mark, discipline);
+	Assert.False(result);            
+}
 
-        //tc2
-        [Fact]
-        public void CheckPersonalBest_PersonalBest()
-        {
-            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
-            var mapper = config.CreateMapper();
-            var sydney = new AthleteModel()
-            {
-                Id = 1,
-                Nationality = "USA",
-                Name = "Sydney Maclaughlin",
-                Gender = Gender.F,
-                Points = 1000,
-                PersonalBest = 52.75m
-            };
-            var mark = 51.79m;
-            string discipline = "400MH";
-            var repositoryMock = new Mock<IAthleteRepository>();
-            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+//tc2
+[Fact]
+public void CheckPersonalBest_PersonalBest()
+{
+	var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+	var mapper = config.CreateMapper();
+	var sydney = new AthleteModel()
+	{
+		Id = 1,
+		Nationality = "USA",
+		Name = "Sydney Maclaughlin",
+		Gender = Gender.F,
+		Points = 1000,
+		PersonalBest = 52.75m
+	};
+	var mark = 51.79m;
+	string discipline = "400MH";
+	var repositoryMock = new Mock<IAthleteRepository>();
+	var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
 
-            var result = disciplinesService.CheckPersonalBest(sydney, mark, discipline);
-            Assert.True(result);
-        }
+	var result = disciplinesService.CheckPersonalBest(sydney, mark, discipline);
+	Assert.True(result);
+}
 ```

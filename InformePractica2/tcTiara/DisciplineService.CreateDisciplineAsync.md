@@ -83,56 +83,56 @@ classDef c2 fill:#2964D9, stroke:#2964D9;
 
 ```csharp
 //tc1
-        [Fact]
-        public void CreateDisciplineAsync_ValidId_ReuturnsDBException()
-        {
-            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
-            var mapper = config.CreateMapper();
-            var longJumpDisciplineEntity = new DisciplineEntity()
-            {
-                Name = "Long Jump"
-            };
-            var longJumpDisciplineModel = new DisciplineModel()
-            {
-                
-                Name = "Long Jump"
-            };
-            var repositoryMock = new Mock<IAthleteRepository>();           
-            repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(false);
-            repositoryMock.Setup(r => r.CreateDiscipline(longJumpDisciplineEntity));
-            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+[Fact]
+public void CreateDisciplineAsync_ValidId_ReuturnsDBException()
+{
+	var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+	var mapper = config.CreateMapper();
+	var longJumpDisciplineEntity = new DisciplineEntity()
+	{
+		Name = "Long Jump"
+	};
+	var longJumpDisciplineModel = new DisciplineModel()
+	{
+		
+		Name = "Long Jump"
+	};
+	var repositoryMock = new Mock<IAthleteRepository>();           
+	repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(false);
+	repositoryMock.Setup(r => r.CreateDiscipline(longJumpDisciplineEntity));
+	var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
 
-            var exception = Assert.ThrowsAsync<Exception>(async () => await disciplinesService.CreateDisciplineAsync(longJumpDisciplineModel));
-            Assert.Equal("Database Error", exception.Result.Message);
-        }
-        //tc2
-        [Fact]
-        public async Task CreateDisciplineAsync_ValidId_CreatesDiscipline()
-        {
-            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
-            var mapper = config.CreateMapper();
-            var longJumpDisciplineEntity = new DisciplineEntity()
-            {
-                Id = 0,
-                Name = "Long Jump"
-            };
-            var longJumpDisciplineModel = new DisciplineModel()
-            {
-                Name = "Long Jump"
-            };
-            var repositoryMock = new Mock<IAthleteRepository>();
-            repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
-            repositoryMock.Setup(r => r.CreateDiscipline(longJumpDisciplineEntity));
-            var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
-            var disciplineCreated = await disciplinesService.CreateDisciplineAsync(longJumpDisciplineModel);
-            Assert.NotNull(disciplineCreated);
-            Assert.Equal("Long Jump", disciplineCreated.Name);
-            Assert.Equal(0, disciplineCreated.Id);
-            Assert.Empty(disciplineCreated.Athletes);
-            Assert.Null(disciplineCreated.Rules);
-            Assert.Null(disciplineCreated.CreationDate);
-            Assert.Null(disciplineCreated.FemaleWorldRecord);
-            Assert.Null(disciplineCreated.MaleWorldRecord);
-            
-        }
+	var exception = Assert.ThrowsAsync<Exception>(async () => await disciplinesService.CreateDisciplineAsync(longJumpDisciplineModel));
+	Assert.Equal("Database Error", exception.Result.Message);
+}
+//tc2
+[Fact]
+public async Task CreateDisciplineAsync_ValidId_CreatesDiscipline()
+{
+	var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+	var mapper = config.CreateMapper();
+	var longJumpDisciplineEntity = new DisciplineEntity()
+	{
+		Id = 0,
+		Name = "Long Jump"
+	};
+	var longJumpDisciplineModel = new DisciplineModel()
+	{
+		Name = "Long Jump"
+	};
+	var repositoryMock = new Mock<IAthleteRepository>();
+	repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
+	repositoryMock.Setup(r => r.CreateDiscipline(longJumpDisciplineEntity));
+	var disciplinesService = new DisciplineService(repositoryMock.Object, mapper);
+	var disciplineCreated = await disciplinesService.CreateDisciplineAsync(longJumpDisciplineModel);
+	Assert.NotNull(disciplineCreated);
+	Assert.Equal("Long Jump", disciplineCreated.Name);
+	Assert.Equal(0, disciplineCreated.Id);
+	Assert.Empty(disciplineCreated.Athletes);
+	Assert.Null(disciplineCreated.Rules);
+	Assert.Null(disciplineCreated.CreationDate);
+	Assert.Null(disciplineCreated.FemaleWorldRecord);
+	Assert.Null(disciplineCreated.MaleWorldRecord);
+	
+}
 ```
