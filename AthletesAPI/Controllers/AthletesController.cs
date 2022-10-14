@@ -13,7 +13,7 @@ namespace AthletesRestAPI.Controllers
 {
    
     [Route("api/disciplines/{disciplineId}/athletes")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class AthletesController:Controller
     {
         private IAthleteService _athleteService;

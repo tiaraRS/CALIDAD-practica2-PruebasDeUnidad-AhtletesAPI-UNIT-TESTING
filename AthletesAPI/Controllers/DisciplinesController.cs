@@ -36,7 +36,7 @@ namespace DisciplinesRestAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Something happened.");
             }
         }
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("{disciplineId:int}")]
         public async Task<ActionResult<DisciplineModel>> GetDisciplineAsync(int disciplineId, string showAthletes)
         {
@@ -58,7 +58,7 @@ namespace DisciplinesRestAPI.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPut("{disciplineId:int}")]
         public async Task<ActionResult<DisciplineModel>> UpdateDisciplineAsync(int disciplineId, [FromBody] DisciplineModel Discipline)
         {
@@ -78,7 +78,7 @@ namespace DisciplinesRestAPI.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<DisciplineModel>> CreateDisciplineAsync([FromBody] DisciplineModel Discipline)
         {
