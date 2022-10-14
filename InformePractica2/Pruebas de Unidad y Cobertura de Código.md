@@ -118,41 +118,58 @@ Una vez realizados los pasos anteriores satisfactoriamente, se puede proceder a 
 ### 2.1.2. Cómo funciona
 Para probar el funcionamiento de la API, se provee la documentación de Postman en el repositorio, en formato json:
 **![](https://lh5.googleusercontent.com/uxtwr5nxQh201s_BVY3WLwmgbk62q_qx09mtskB4lXsPYIlsKqJnsgIYYdhAXGyd8DYc-Y8I-My86o_4txZ8Utll9E1-Yy0XrfZ3D0rtgscBJfBpEbTFmcyHpTc3ObCr3DTOf6s6H35U7q-kNPwLYERXW9JkpTjmw-Fhl5bgUaxoaTXk-QWbodbAhw)**
+
 Para importar el archivo desde Postman, hacer click en import:
+
 **![](https://lh3.googleusercontent.com/q1Bv3owNLm3T8Shbz6fPDGCHwDfEQ2z4V6AEbhW75qI7QTtKvGh6lFgOLwmCh4ouogMHIpiI0LLnpkiPpAKuzb-e29iZEiomCXC30zRDndOvQb2wLiU5JgqYUEKpl22K5XzsXiMk4DmdOTYbRbz53IuFAIcGQArl6bplX9AMqdorMHTqb0GuQo6SyA)**
 Después se debe arrastrar el archivo e importar 
 
+![[Pasted image 20221014145618.png]]
+
+**![](https://lh4.googleusercontent.com/QYt_6XP7zwBtZRTK6zIW4Tkf_0zoBFDqGUuseWy5JZ1tud-iKvVXMIkM2dzVXyt2XCPVuxbtUSZviLfjqKP27v14C6JTfCnErisKcIeMJKm_t4z7iECvOghu8NQgO6vwo4AmYzX33IMrM7QPxdH7bdZIOVPl2u1h4ufWcDdCZKZ0A-13yEAgeRRLxQ)**
+
 La aplicación debe estar corriendo para probar desde postman. Se debe setear la variable de entorno athletesAPI a http://localhost/5077 desde postman, o bien reemplazar la variable por la ruta, es decir reemplazar 
 
+**![](https://lh6.googleusercontent.com/IYOvA1V5MoF_ucF-k7Bp4UEc_815iGEQyLP_ExbTRpKm5dYP5kSoRdTGoGTzDiKKVHKE8CwGVnlAi0tnsw_lPJsAd8sv_s56tR9ocF-O6NSlGK1i3k1qGQMkQioIepsokSzdSOXhyQtMP3rsx-zypQKOuXMQBjXy1s3-7KjZn6lkWzHSFbtYvMmkzg)**
 por
 
-en todos los endpoints.
+**![](https://lh4.googleusercontent.com/lohqn8NFUhDbFIdpNH_VQsc7z_llvY5P4KNE080KNlWWg0frpCQIefPpYzqRxisoH-KQ2Zxc9tjH9k-rDA_W49MxHybjwMPbqgKBQ5faIV_snnQZRHWRHfInZPJyd7DDiOBSxFWoKz5SLN_98Fskmms0LM5tY3t55ac0DkZPMJhqj6vV2p4gw_XpDg)**
 
+en todos los endpoints.
 Se podrán ver todos los endpoints posibles y proceder a probar:
+
+**![](https://lh3.googleusercontent.com/Oe2KGd5K77WBW_Iu_oCe8w-cKMcKTry173VoShFlF0S1Dx8BRUCdcZVInlXPDibQ2qLd9jjZMWXO6VWA2a-m_Z8MSIp7Lm_1Q7B1F1lvQCw-6nBIP99oaTJeQaHwSkANJebggKrSJ7hRtpMs-RkD3jmgQgWBsckyvpqNaW75XVs8zhzhDYjXjnfecA)**
 
 Cabe destacar que para probar cualquier endpoint fuera del GetDisciplines, requiere login de administrador para obtener el token. Para esto se puede usar un usuario que ya tiene asignado el rol de administrador para el login:
 
+**![](https://lh6.googleusercontent.com/XKcmOTK6djysIJzxEKI9uKf5mbKGvlJUSBR_lU41pu2Q0j1M8nI7kbs0Vd_JKc13U3VMe3SRT6n8bLZv5kPhuWsZ1ktCqTIFXtmqlfjYMpxYVhGVmcl7lq7UADT0sqQbqnlnvhLcrc5UMTBWhO_4w0Tw6THGlDPjCpkvUn576EDE4J1N0tDi3LJfew)**
+
 Una vez logueado satisfactoriamente, se devuelve un token. Se debe copiar este token al campo de Authentication -> Bearer Token -> BearerToken en cada endpoint, por ejemplo:
+
+**![](https://lh3.googleusercontent.com/i7IVpsojP4QccsCrzLJraVnitmyfGhG34FmK-iikvfvrWt_-7hjINA7PmAPCQ0mHo137YAjk5EcFeFrzR4n7PbTEGcfXUsgkPsR2R68eHEe1EVMcorfa0sseUv0UpM52xxrWSN0IjIHf_1B3iTjSHMYknq6hdUjzaScM0ZDUMfy0vY75iCmoPhgOHw)**
 
 Una vez realizado esto, se puede probar cada endpoint:
 
+**![](https://lh5.googleusercontent.com/N0ADQ5GkjtzE6TVpN9BMD76u2Hov8fa_khtcGZypgloXcrl7W3jciXp3mFHp-oKM9mVTx64nMzn_S1hFuNo92FDygCgZjq3sHcTfzgzM1ifa3bHQrRxfA3DRRnCuDNEkj549FaUtJKo3bfe11qAQEefBoJPB_k7sn-qYb5Ghlmn2Nn0rmrDptaX8Ng)**
 
 ## 2.2. TechStack 
 ### 2.2.1. Tecnologías usadas
 El proyecto está codificado en c#, a través del framework .NETCore, versión 3.1.
 Para el manejo de la base de datos, se utilizaron los paquetes NuGet de EntityFrameworkCore:
-microsoft.entityframeworkcore 
-microsoft.entityframeworkcore.design
-microsoft.entityframeworkcore.sqlserver
+- microsoft.entityframeworkcore 
+- microsoft.entityframeworkcore.design
+- microsoft.entityframeworkcore.sqlserver
 Estos 3 paquetes permiten seguir el enfoque “Code First”, permitiendo mapear las clases de entidad a la base de base de datos.
 El paquete automapper.extensions.microsoft.dependencyinjection permite mapear una entidad (representación de un registro de base de datos) a un modelo (representación de la entidad en la aplicación) y viceversa.
 La API tiene implementada seguridad, a través del manejo de tokens (JWT), con un tiempo de vida de 2 horas, implementada a través del paquetes NuGet proporcionados por el framework de NetCore, específicamente:
-microsoft.aspnetcore.authentication.jwtbearer (para el manejo de tokens)
-microsoft.aspnetcore.identity (para el manejo de usuarios y roles)
-microsoft.aspnetcore.identity.entityframeworkcore (para el manejo de las tablas de usuario y rol en base de datos, creadas a partir del código fuente)
+- microsoft.aspnetcore.authentication.jwtbearer (para el manejo de tokens)
+- microsoft.aspnetcore.identity (para el manejo de usuarios y roles)
+- microsoft.aspnetcore.identity.entityframeworkcore (para el manejo de las tablas de usuario y rol en base de datos, creadas a partir del código fuente)
 
 ### 2.2.2. Estructura del proyecto
-El proyecto tiene una estructura de MVC (modelo vista controlador), y cuenta con 3 capas: 
+El proyecto tiene una estructura de MVC (modelo vista controlador), y cuenta con 3 capas:
+
+**![](https://lh3.googleusercontent.com/3g7dc4Gph7Dg9sfrv5FLq14Q3H-P0MBVwb4uSQL74VeB_aXbcYRAmnCnBSAKQ6ky46tw-FvQWvP2xpwdvxqvMQXokBGr39C7Cy81HTRd3Gubu7qFjWJp0GaVGHu-4z-IActcV8OdYYvTAokrEvYF899uFIgr5NG9REAypuftNVry_z5YJrxkIYlzYQ)**
 
 CONTROLADORES: 1 por cada recurso, encargados de manejar los endpoints y manejar los datos en formato JSON
 
@@ -160,19 +177,24 @@ SERVICIOS: 1 por cada recurso,  se encargan de toda la lógica de negocio y comu
 
 REPOSITORIO: 1 para toda la aplicación, se encarga de interactuar con la base de datos, recuperando e insertando información
 
-
 ## 2.3. Scope de la AUT
 La aplicación bajo prueba tiene un total de:
-31 archivos de clase que pueden ser probados
-1023 líneas de código que pueden ser probadas
-57 métodos que pueden ser probados
-El total de líneas de la aplicación no puede ser probada, o al menos no tiene sentido probar ya que esta contiene archivos de migraciones.
+- **28** archivos de clase que pueden ser probados
+- **943** líneas de código que pueden ser probadas
+- **57** métodos que pueden ser probados
+El total de líneas (**2137**) de la aplicación no puede ser probada, o al menos no tiene sentido probar ya que esta contiene archivos de migraciones de base de datos, archivos de configuración como `Program.cs` o `StartUp.cs`. Estos archivos fueron excluidos para el diseño de las pruebas y el calculo de la cobertura. 
 # 3. Estado inicial
+
+**![](https://lh6.googleusercontent.com/cBUZKumrLuRGDyOWvYKzJUhrinCNW7_QtjHCA4Sgd79NvrfU2HsE2s8m9ls3MplASNXc29OP-tXlkDUvoV51c62_tv2NJEDaSorlHmu889LQ2g3Mg2XT466f-eDo3TpjtdVOLLHMvLaiX07re-_uTS5QlSKFx3z1Jiq-r6H_vYbsUuqnDomvBMMOtg)**
 
 Como se observa en la imagen de arriba, al inicio el proyecto no contaba con ninguna prueba de unidad implementada.
 
-
 # 4. Estado final (incluir número de líneas, métodos y archivos probados frente al total)
+
+
+**![](https://lh5.googleusercontent.com/xwRtbI6nG1Ocx2gBG71E59NdU-kljDHM1vz8Yg1IYz1LMd13lK4qL21NlNeCnqmljS7AcLH4jZBvZzFKmGB_WK9foNcsl5vFuP6gUKrHag-ZymxQvDqT1oe0LAEk1HP7J-PP2IY5PBcxZdICMxzTxeEkWymLiZlduEcV1UcGDGI5FjW6G1YMmXr19w)**
+
+
 ## 4.1. Comparación estado inicial y final 
 
 # 5. Flujo de Trabajo
@@ -529,13 +551,13 @@ public async Task GetDisciplinesAsync_ReturnsListOfDisciplines()
 
 ```csharp
 public async Task<DisciplineModel> GetDisciplineAsync(int disciplineId, bool showAthletes = false)
-        {
-            var disciplineEntity = await _athleteRepository.GetDisciplineAsync(disciplineId,showAthletes); //1
-            
-            if (disciplineEntity == null) //2
-                throw new NotFoundElementException($"discipline with id {disciplineId} does not exist"); //3
-            return _mapper.Map<DisciplineModel>(disciplineEntity); //4
-        }
+{
+	var disciplineEntity = await _athleteRepository.GetDisciplineAsync(disciplineId,showAthletes); //1
+	
+	if (disciplineEntity == null) //2
+		throw new NotFoundElementException($"discipline with id {disciplineId} does not exist"); //3
+	return _mapper.Map<DisciplineModel>(disciplineEntity); //4
+}
 ```
 
 ### Grafo
@@ -798,16 +820,16 @@ public async Task DeleteDisciplineAsync_ValidId_DeletesDisicpline()
 
 ```csharp
 public async Task<DisciplineModel> CreateDisciplineAsync(DisciplineModel discipline)
-        {
-            var disciplineEntity = _mapper.Map<DisciplineEntity> //1(discipline);
-            _athleteRepository.CreateDiscipline(disciplineEntity); //1
-            var result = await _athleteRepository.SaveChangesAsync(); //1
-            if (result) //2
-            {
-               return  _mapper.Map<DisciplineModel>(disciplineEntity); //3
-            }
-            throw new Exception("Database Error"); //4
-        }
+{
+	var disciplineEntity = _mapper.Map<DisciplineEntity> //1(discipline);
+	_athleteRepository.CreateDiscipline(disciplineEntity); //1
+	var result = await _athleteRepository.SaveChangesAsync(); //1
+	if (result) //2
+	{
+	   return  _mapper.Map<DisciplineModel>(disciplineEntity); //3
+	}
+	throw new Exception("Database Error"); //4
+}
 ```
 
 ### Grafo
