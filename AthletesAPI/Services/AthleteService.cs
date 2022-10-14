@@ -89,7 +89,7 @@ namespace AthletesRestAPI.Services
             _best3MarksFilter["TripleJump"] = Best3MarkFilterDescending;
         }
       */
-        private async Task<DisciplineEntity> GetDisciplineAsync(int disciplineId)
+        public async Task<DisciplineEntity> GetDisciplineAsync(int disciplineId)
         {
             var discipline = await _athleteRepository.GetDisciplineAsync(disciplineId,false);
             if (discipline == null)

@@ -307,5 +307,45 @@ namespace UnitTesting.ServicesUT
             }
         }
 
+
+        //CreateAthleteAsync
+        [Theory]
+        [InlineData(87)]//tc1
+        [InlineData(1)]//tc2
+        public async Task GetDisciplineAsync(int disciplineId)
+        {
+            int athleteId = 1;
+            var disciplineEntity100M = new DisciplineEntity()
+            {
+                Id = disciplineId,
+                Name = "100M"
+            };
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+            var mapper = config.CreateMapper();
+            
+
+            var repositoryMock = new Mock<IAthleteRepository>();
+
+            bool disciplineIdExist = disciplineId == 1;
+
+            if (!disciplineIdExist)
+            {
+                repositoryMock.Setup(r => r.GetDisciplineAsync(disciplineId, false));
+                var athleteService = new AthleteService(repositoryMock.Object, mapper);
+                //tc1
+                NotFoundElementException exception = await Assert.ThrowsAsync<NotFoundElementException>(
+                () => athleteService.GetDisciplineAsync(disciplineId));
+                Assert.Equal($"Discipline with id {disciplineId} was not found", exception.Message);
+            }
+            if (disciplineIdExist)
+            {
+                repositoryMock.Setup(r => r.GetDisciplineAsync(disciplineId, false)).ReturnsAsync(disciplineEntity100M);
+                var athleteService = new AthleteService(repositoryMock.Object, mapper);
+                //tc2
+                var disciplineActual = await athleteService.GetDisciplineAsync(disciplineId);
+                Assert.Equal(disciplineEntity100M, disciplineActual);
+            }
+        }
+
     }
 }

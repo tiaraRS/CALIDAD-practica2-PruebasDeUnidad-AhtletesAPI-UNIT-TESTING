@@ -51,10 +51,10 @@ $$ v(G) = 2 $$
 | | Camino   | Entrada   | TC | Salida  |
 | --- | --- | --- | --- | --- |
 | 1 | I 1 2 3 F |  `athleteId` no existe  | `athleteId=87` | throw `NotFoundElementException` |
-| 2 | I 1 2 4 F |  `athleteId` existe | `athleteId=1` | `{Id=87, Name="Some Name", ...}`  |
+| 2 | I 1 2 4 F |  `athleteId` existe | `athleteId=1` | `{Id=1, Name="Some Name", ...}`  |
 
 1. Verificar que si `athleteId=87`, `disciplineId=1` se lanza una excepción `NotFoundElementException` con mensaje `Athlete with id 87 does not exist in discipline 1`
-2. Verificar que si `athleteId=1`, `disciplineId=1` se retorna un `AthleteModel` con `{Id=87, DisciplineId=1, ...}`
+2. Verificar que si `athleteId=1`, `disciplineId=1` se retorna un `AthleteModel` con `{Id=1, DisciplineId=1, ...}`
 
 Camino 1
 ```mermaid

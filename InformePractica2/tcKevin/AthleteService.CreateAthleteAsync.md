@@ -1,5 +1,4 @@
 ## AthleteService.CreateAthleteAsync
-## AthleteService.GetAthleteAsync
 
 ### Código
 
