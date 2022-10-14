@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using RestaurantRestAPI.Data;
+using System.Xml.Linq;
 
 namespace UnitTesting.ServicesUT
 {
@@ -316,7 +317,144 @@ namespace UnitTesting.ServicesUT
             Assert.Equal(stringErrors, response.Errors);
         }
 
-        //CreateUserRoleAsync
+        //CreateRoleAsync
         //tc1
+        [Fact]
+        public async Task CreateUserRole_RoleDoesntExist()
+        {
+            //ARRANGE
+            var userRoleModel = new CreateUserRoleViewModel()
+            {
+                UserId = "a391ce2932cd-19ca392f32c2",
+                RoleId = "doesnt-exist"
+            };
+
+            var userManagerMock = new Mock<UserManager<IdentityUser>>(Mock.Of<IUserStore<IdentityUser>>(), null, null, null, null, null, null, null, null);
+            var roleManagerMock = new Mock<RoleManager<IdentityRole>>(Mock.Of<IRoleStore<IdentityRole>>(), null, null, null, null);
+            var configurationMock = new Mock<IConfiguration>();
+
+            roleManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<String>())).ReturnsAsync((IdentityRole)null);
+
+            //ACT
+            var userService = new UserService(userManagerMock.Object, roleManagerMock.Object, configurationMock.Object);
+            var response = await userService.CreateUserRoleAsync(userRoleModel);
+
+            //ASSERT
+            Assert.Equal("Role does not exist", response.Token);
+            Assert.False(response.IsSuccess);
+        }
+
+        //tc2
+        [Fact]
+        public async Task CreateUserRole_UserDoesntExist()
+        {
+            //ARRANGE
+            var userRoleModel = new CreateUserRoleViewModel()
+            {
+                UserId = "doesnt-exist",
+                RoleId = "4131sdfas ei1-734ddacs3s"
+            };
+
+            var userManagerMock = new Mock<UserManager<IdentityUser>>(Mock.Of<IUserStore<IdentityUser>>(), null, null, null, null, null, null, null, null);
+            var roleManagerMock = new Mock<RoleManager<IdentityRole>>(Mock.Of<IRoleStore<IdentityRole>>(), null, null, null, null);
+            var configurationMock = new Mock<IConfiguration>();
+
+            roleManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<String>())).ReturnsAsync(new IdentityRole());
+            userManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<String>())).ReturnsAsync((IdentityUser)null);
+
+            //ACT
+            var userService = new UserService(userManagerMock.Object, roleManagerMock.Object, configurationMock.Object);
+            var response = await userService.CreateUserRoleAsync(userRoleModel);
+
+            //ASSERT
+            Assert.Equal("user does not exist", response.Token);
+            Assert.False(response.IsSuccess);
+        }
+
+        //tc3
+        [Fact]
+        public async Task CreateUserRole_UserHasAlreadyRole()
+        {
+            //ARRANGE
+            var userRoleModel = new CreateUserRoleViewModel()
+            {
+                UserId = "a391ce2932cd-19ca392f32c2",
+                RoleId = "4131sdfasei1-734ddacs3s"
+            };
+
+            var userManagerMock = new Mock<UserManager<IdentityUser>>(Mock.Of<IUserStore<IdentityUser>>(), null, null, null, null, null, null, null, null);
+            var roleManagerMock = new Mock<RoleManager<IdentityRole>>(Mock.Of<IRoleStore<IdentityRole>>(), null, null, null, null);
+            var configurationMock = new Mock<IConfiguration>();
+
+            roleManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<String>())).ReturnsAsync(new IdentityRole());
+            userManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<String>())).ReturnsAsync(new IdentityUser());
+            userManagerMock.Setup(x => x.IsInRoleAsync(It.IsAny<IdentityUser>(), It.IsAny<String>())).ReturnsAsync(true);
+
+            //ACT
+            var userService = new UserService(userManagerMock.Object, roleManagerMock.Object, configurationMock.Object);
+            var response = await userService.CreateUserRoleAsync(userRoleModel);
+
+            //ASSERT
+            Assert.Equal("user has role already", response.Token);
+            Assert.False(response.IsSuccess);
+        }
+
+        //tc4
+        [Fact]
+        public async Task CreateUserRole_RoleAssignedSuccessfully()
+        {
+            //ARRANGE
+            var userRoleModel = new CreateUserRoleViewModel()
+            {
+                UserId = "a391ce2932cd-19ca392f32c2",
+                RoleId = "ff3c465ocei1-35963lsto3is"
+            };
+
+            var userManagerMock = new Mock<UserManager<IdentityUser>>(Mock.Of<IUserStore<IdentityUser>>(), null, null, null, null, null, null, null, null);
+            var roleManagerMock = new Mock<RoleManager<IdentityRole>>(Mock.Of<IRoleStore<IdentityRole>>(), null, null, null, null);
+            var configurationMock = new Mock<IConfiguration>();
+
+            roleManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<String>())).ReturnsAsync(new IdentityRole());
+            userManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<String>())).ReturnsAsync(new IdentityUser());
+            userManagerMock.Setup(x => x.IsInRoleAsync(It.IsAny<IdentityUser>(), It.IsAny<String>())).ReturnsAsync(false);
+            userManagerMock.Setup(x => x.AddToRoleAsync(It.IsAny<IdentityUser>(), It.IsAny<String>())).ReturnsAsync(IdentityResult.Success);
+
+            //ACT
+            var userService = new UserService(userManagerMock.Object, roleManagerMock.Object, configurationMock.Object);
+            var response = await userService.CreateUserRoleAsync(userRoleModel);
+
+            //ASSERT
+            Assert.Equal("Role assigned", response.Token);
+            Assert.True(response.IsSuccess);
+        }
+
+        //tc5
+        [Fact]
+        public async Task CreateUserRole_RoleNotAssignedError()
+        {
+            //ARRANGE
+            var userRoleModel = new CreateUserRoleViewModel()
+            {
+                UserId = "a391ce2932cd-19ca392f32c2",
+                RoleId = "ff3c465ocei1-35963lsto3is"
+            };
+
+            var userManagerMock = new Mock<UserManager<IdentityUser>>(Mock.Of<IUserStore<IdentityUser>>(), null, null, null, null, null, null, null, null);
+            var roleManagerMock = new Mock<RoleManager<IdentityRole>>(Mock.Of<IRoleStore<IdentityRole>>(), null, null, null, null);
+            var configurationMock = new Mock<IConfiguration>();
+
+            roleManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<String>())).ReturnsAsync(new IdentityRole());
+            userManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<String>())).ReturnsAsync(new IdentityUser());
+            userManagerMock.Setup(x => x.IsInRoleAsync(It.IsAny<IdentityUser>(), It.IsAny<String>())).ReturnsAsync(false);
+            userManagerMock.Setup(x => x.AddToRoleAsync(It.IsAny<IdentityUser>(), It.IsAny<String>())).ReturnsAsync(IdentityResult.Failed(new IdentityError()));
+
+            //ACT
+            var userService = new UserService(userManagerMock.Object, roleManagerMock.Object, configurationMock.Object);
+            var response = await userService.CreateUserRoleAsync(userRoleModel);
+
+            //ASSERT
+            Assert.Equal("something went wrong", response.Token);
+            Assert.False(response.IsSuccess);
+        }
     }
 }
