@@ -95,5 +95,54 @@ graph TD
 ### Pruebas unitarias
 
 ```csharp
+//DeleteAthleteAsync
+[Theory]
+[InlineData(false)]//tc1
+[InlineData(true)]//tc2
+public async Task DeleteAthleteAsync_UpdateDb(bool dbUpdateResult)
+{
+	int athleteId = 1;
+	int disciplineId = 1;
+	var disciplineEntity100M = new DisciplineEntity()
+	{
+		Id = disciplineId,
+		Name = "100M"
+	};
+	var config = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>());
+	var mapper = config.CreateMapper();
 
+	var athleteEntity = new AthleteEntity()
+	{
+		Id = athleteId,
+		Name = "Juan",
+		Nationality = "Boliviano",
+		NumberOfCompetitions = 1,
+		Gender = Gender.M,
+		PersonalBest = 125,
+		SeasonBest = 125,
+	};
+
+
+	var repositoryMock = new Mock<IAthleteRepository>();
+	repositoryMock.Setup(r => r.DeleteAthleteAsync(athleteId,disciplineId));
+	repositoryMock.Setup(r => r.GetDisciplineAsync(disciplineId, false)).ReturnsAsync(disciplineEntity100M);
+	repositoryMock.Setup(r => r.GetAthleteAsync(athleteId,disciplineId)).ReturnsAsync(athleteEntity);
+	repositoryMock.Setup(r => r.SaveChangesAsync()).ReturnsAsync(dbUpdateResult);
+
+	var athleteService = new AthleteService(repositoryMock.Object, mapper);
+
+	if (!dbUpdateResult)
+	{
+		//tc1
+		Exception exception = await Assert.ThrowsAsync<Exception>(
+		() => athleteService.DeleteAthleteAsync(athleteId, disciplineId));
+		Assert.Equal("Database Error", exception.Message);
+	}
+	if (dbUpdateResult)
+	{
+		//tc2
+		bool athleteDeleted = await athleteService.DeleteAthleteAsync(athleteId, disciplineId);
+		Assert.True(athleteDeleted);
+	}
+}
 ```
