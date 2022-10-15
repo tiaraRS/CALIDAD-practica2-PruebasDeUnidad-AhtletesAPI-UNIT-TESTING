@@ -350,6 +350,7 @@ Para probar el framework, se creó un proyecto pequeño: tiaraRS/POC-Xunit-.net 
 ### 5.1.4. Elección - xUnit
 Después de una extensa investigación se concluyo que **xUnit** seria el framework utilizado para implementar las pruebas de unidad.
 Las razones principales son:
+- Es el framework en ascenso, con pocos años, de los creadores de NUnit, desarrollado con el fin de ajustarse mas a las practicas de testing actuales.
 - La facilidad en la sintaxis, permite evitar tareas de setup, pudiendo inicializarse los atributos en el constructor de la clase de prueba.
 - El uso de attributes `[Fact]` para test individuales y `[Theory]` para test a los que se pueden pasar diferentes parámetros de entrada.
 - Es el framework con mejor soporte y mas usado por la comunidad, incluso por la misma documentación oficial de Microsoft

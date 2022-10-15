@@ -69,8 +69,8 @@ $$
 | 2   | I-1a-2c-3e-5g-F | `user`={Email="testmail@gmail.com", Password="thisIsNotThePass"} | ModelState.IsValid->True and result.IsSuccess->False | return Bad Request: "Invalid password"             |
 | 3   | I-1b-6h-F       | `user`={Email="notAnEmail", Password="a"}                        | ModelState.IsValid->False                            | return Bad Request:"Some properties are not valid" |
 
-TC1: El usuario se loguea correctamente
-TC2: El usuario no se loguea porque su contraseña es incorrecta
+TC1: El usuario se loguea correctamente \
+TC2: El usuario no se loguea porque su contraseña es incorrecta \
 TC3: El usuario no se loguea debido a que los datos que ingreso no son adecuados para el modelo
 
 Camino 1
@@ -273,8 +273,8 @@ $$
 | 2   | I-1a-2c-3e-5g-F | `user`={Email="testmail@gmail.com", Password="SecretPass1234", ConfirmPassword="AnotherPass1234"} | ModelState.IsValid->True and result.IsSuccess->False | return Bad Request: "Confirm password doesn't match the password" |
 | 3   | I-1b-6h-F       | `user`={Email="nem", Password="nope", ConfirmPassword="n"}                                        | ModelState.IsValid->False                            | return Bad Request:"Some properties are not valid"                |
 
-TC1: El usuario se logra registrar correctamente
-TC2: El usuario no se registra debido a un error generico en el servicio
+TC1: El usuario se logra registrar correctamente \
+TC2: El usuario no se registra debido a un error generico en el servicio \
 TC3: El usuario no se registra debido a que los datos que ingreso no son adecuados para el modelo
 
 Camino 1
@@ -481,8 +481,8 @@ $$
 | 2   | I-1a-2c-3e-5g-F | `role`={Name="NoRole", NormalizedName="notNorMal"} | ModelState.IsValid->True and result.IsSuccess->False | return Bad Request: "Role did not create"          |
 | 3   | I-1b-6h-F       | `role`={Name=null, NormalizedName=null}            | ModelState.IsValid->False                            | return Bad Request:"Some properties are not valid" |
 
-TC1: Se crea un nuevo rol correctamente
-TC2: No se crea un rol debido a un error generico en el servicio
+TC1: Se crea un nuevo rol correctamente \
+TC2: No se crea un rol debido a un error generico en el servicio \
 TC3: No se crea un rol debido a que los datos que ingreso no son adecuados para el modelo
 
 Camino 1
@@ -686,8 +686,8 @@ $$
 | 2   | I-1a-2c-3e-5g-F | `userRole`={UserId="a391ce2932cd-19ca392f32c2", RoleId="3"}                         | ModelState.IsValid->True and result.IsSuccess->False | return Bad Request: "Role does not exist"          |
 | 3   | I-1b-6h-F       | `userRole`={UserId=null, RoleId=null}                                               | ModelState.IsValid->False                            | return Bad Request:"Some properties are not valid" |
 
-TC1: Se asigno un rol a un usuario correctamente
-TC2: No se logro encontrar un rol para asignar al usuario
+TC1: Se asigno un rol a un usuario correctamente \
+TC2: No se logro encontrar un rol para asignar al usuario \
 TC3: El modelo de Asignacion de rol que se encontro tiene campos con valor nulo
 
 Camino 1
@@ -939,9 +939,9 @@ $$
 | 3   | I-1a-2c-4d-5f-7g-8h-9j-8i-10k-F | `user`={Email="correctMail@gmail.com", Password="Secret1234"}    | user ==null ->False and !result->False and roles.size()>=1 | return UserResponse; IsSuccess=true                             |
 | 4   | I-1a-2c-4d-5f-7g-8i-10k-F       | `user`={Email="correctMail@gmail.com", Password="Secret1234"}    | user ==null ->False and !result->False and roles.size()==0 | return UserResponse; IsSuccess=true                             |
 
-TC1: El usuario intenta logearse pero el sistema no encuentra un usuario con esa direccion de correo electronico
-TC2: El usuario intenta logearse pero la contaseña no es la correcta.
-TC3: El login se hizo exitosamente
+TC1: El usuario intenta logearse pero el sistema no encuentra un usuario con esa direccion de correo electronico \
+TC2: El usuario intenta logearse pero la contaseña no es la correcta. \
+TC3: El login se hizo exitosamente \
 TC4: El login se hizo exitosamente sin asignarle ningun rol al usuario
 
 Camino 1
@@ -949,7 +949,7 @@ Camino 1
 ```mermaid
 graph TD
     I(I):::c1 --> 1(1):::c1
-    1 --a--> 2(2)
+    1 --a--> 2(2):::c1
     2 --b--> 3(3):::c1
     2 --c--> 4(4)
     4 --d--> 5(5)
@@ -970,7 +970,7 @@ Camino 2
 ```mermaid
 graph TD
     I(I):::c2 --> 1(1):::c2
-    1 --a--> 2(2)
+    1 --a--> 2(2):::c2
     2 --b--> 3(3)
     2 --c--> 4(4):::c2
     4 --d--> 5(5):::c2
@@ -1015,7 +1015,7 @@ graph TD
     1 --a--> 2(2):::c4
     2 --b--> 3(3)
     2 --c--> 4(4):::c4
-    4 --d--> 5(5:::c4
+    4 --d--> 5(5):::c4
     5 --e--> 6(6)
     5 --f--> 7(7):::c4
     7 --g--> 8(8):::c4
@@ -1261,9 +1261,9 @@ $$
 | 3   | I-1b-3d-5e-6f-7h-F | `user`={Email="testmail@gmail.com", Password="SecretPass1234", ConfirmPassword="SecretPass1234"} | model==null->False and (model.Password != model.ConfirmPassword)->False and result.Succeded->True  | return UserManagerResponse: "User created successfully!"                   |
 | 4   | I-1b-3d-5e-6h-8i-F | `user`={Email="testmail@gmail.com", Password="SecretPass1234", ConfirmPassword="SecretPass1234"} | model==null->False and (model.Password != model.ConfirmPassword)->False and result.Succeded->False | return UserManagerResponse: "User did not create"                          |
 
-TC1: No se registro un usuario debido a que este era nulo
-TC2: No se registro un usuario debido a que las contraseñas no coincidian
-TC3: El usuario se ha registrado exitosamente
+TC1: No se registro un usuario debido a que este era nulo \
+TC2: No se registro un usuario debido a que las contraseñas no coincidian \
+TC3: El usuario se ha registrado exitosamente \
 TC4: El usuario no se registro por un error en el userManager
 
 Camino 1
@@ -1507,7 +1507,7 @@ Numero de regiones
 
 $$
 v(G) = R \\
-v(G) = 2
+v(G) = 2 \\
 $$
 
 Numero de nodos y aristas
@@ -1533,7 +1533,7 @@ $$
 | 1   | I-1a-2b-3e-F | `role`={Name="Admin", NormalizedName="ADMIN"} | result.Succeeded->True  | return UserResponse: "Role created successfully!" |
 | 2   | I-1a-2c-4d-F | `role`={Name="NoRole", NormalizedName="NR"}   | result.Succeeded->False | return UserResponse: ""Role did not create"       |
 
-TC1: Se crea el rol de manera exitosa
+TC1: Se crea el rol de manera exitosa \
 TC2:No se crea el rol debido a un error en el manager
 
 Camino 1
@@ -1741,10 +1741,10 @@ $$
 | 4   | I-1a-2c-4d-5f-7h-9i-10j-11l-F | `userRole`={UserId="a391ce2932cd-19ca392f32c2", RoleId="ff3c465ocei1-35963lsto3is"} | result.Succeeded->True                           | return UserManagerResponse: "Role assigned"         |
 | 5   | I-1a-2c-4d-5f-7h-9i-10k-12m-F | `userRole`={UserId="a391ce2932cd-19ca392f32c2", RoleId="ff3c465ocei1-35963lsto3is"} | result.Succeeded->False                          | return UserManagerResponse: "something went wrong"  |
 
-TC1: No se encontro el rol que se queria asignar al usuario
-TC2: No se encontro el usuario para asignarle un rol
-TC3: El usuario ya tenia un rol asignado
-TC4: El rol fue exitosamente asignado
+TC1: No se encontro el rol que se queria asignar al usuario \
+TC2: No se encontro el usuario para asignarle un rol \
+TC3: El usuario ya tenia un rol asignado \
+TC4: El rol fue exitosamente asignado \
 TC5: No se pudo asignar el rol por un problema en el manager
 
 Camino 1
