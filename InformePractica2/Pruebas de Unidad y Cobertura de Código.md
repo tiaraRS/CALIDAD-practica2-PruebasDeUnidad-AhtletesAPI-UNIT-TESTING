@@ -1,4 +1,3 @@
-# Índice
 # 1. Objetivos
 ## 1.1. Objetivo general
 Implementar Pruebas de Unidad (Unit Tests) para medir la cobertura de las mismas (Code Coverage) en una aplicación real.
@@ -231,7 +230,7 @@ Y aunque no nos basamos en la métrica de branch coverage, se consiguió un 65%.
 | Pruebas unitarias  | 0 | 89 |
 
 # 5. Flujo de Trabajo
-## 5.1. Elección de Framework para .NET
+## 5.1. Elección de xUnit Framework para .NET
 Una vez seleccionada la aplicación para realizar las pruebas,  se buscó el framework adecuado para realizar los tests. Se encontraron 3 frameworks principales para testing en dotnet:
 - Microsoft (MSTest) 
 - Nunit 
@@ -401,7 +400,7 @@ Las herramientas mas soportadas en foros y por la comunidad son:
 - NCover que proporciona información detallada sobre la cobertura ya que la herramienta en su totalidad esta centrada en ello, de igual manera es de pago.
 
 Entre las opciones que consideramos (gratuitas):
-- Fine Code Coverage: permitió una instalación sensilla como extension de VisualStudio, con la métrica de statement coverage.
+- Fine Code Coverage: permitió una instalación sencilla como extension de VisualStudio, con la métrica de statement coverage.
 - Coverlet: la instalación si es un poco mas complicada, sin embargo microsoft usa la herramienta en su documentación, brindando tutoriales para su instalación, siendo gratuita, permite la generación de reportes en diferentes formatos. Destacando el HTML, que de manera interactiva te permiten ver las líneas y métricas de cada Archivo o clase. Y en su version de partner brinda incluso las métricas a nivel de método. Finalmente la ventaja principal es que permite ver en el IDE las líneas resaltadas: en verde las cubiertas y en rojo las no cubiertas.
 
 ![[Pasted image 20221014175620.png]]
@@ -494,7 +493,7 @@ Se diseñaron e implementaron las  pruebas de unidad identificando primero los t
 
 ##  [CALIDAD-practica2-PruebasDeUnidad-AhtletesAPI-UNIT-TESTING/6. Casos de prueba y pruebas de unidad.md at main · tiaraRS/CALIDAD-practica2-PruebasDeUnidad-AhtletesAPI-UNIT-TESTING (github.com)](https://github.com/tiaraRS/CALIDAD-practica2-PruebasDeUnidad-AhtletesAPI-UNIT-TESTING/blob/main/InformePractica2/6.%20Casos%20de%20prueba%20y%20pruebas%20de%20unidad.md)
 
-En este repositorio se muestran todos los test diseñados e implementados (incluye el código y los grafos y caminos). A continuación se muestra un ejemplo de lo realizado para cada método que se probo.
+En este repositorio se muestran todos los test diseñados e implementados (incluye el código, los grafos y caminos). A continuación se muestra un ejemplo de lo realizado para cada método que se probo.
 
 ## DisciplineService.CheckSeasonBest
 
@@ -690,9 +689,14 @@ public void CheckSesasonBest_SeasonBestNotImproved_ReturnsFalse()
 
 # 7. Conclusiones
 
-
-
-# 8. Bibliografía
-https://www.lambdatest.com/blog/nunit-vs-xunit-vs-mstest/
-https://www.slant.co/options/1756/~nunit-review
-https://docs.nunit.org/
+- Se alcanzo un 80% de statement coverage superando el 70% planteado como objetivo 
+- Para el diseño de las pruebas se utilizo la técnica y metodología de path coverage, calculando la complejidad cyclomatic, identificando los caminos, diseñando los casos de prueba, e implementando las pruebas de unidad en base a lo anterior.
+- Se selecciono el framework xUnit para la implementación de las pruebas de unidad
+	A pesar de que muchas de las reseñas y opiniones encontradas, señalan que los 3 frameworks mencionados tienen características muy similares y no destacan mucho sobre los otros
+	Las razones principales para elegir xUnit son:
+	- La facilidad en la sintaxis, permite evitar tareas de setup, pudiendo inicializarse los atributos en el constructor de la clase de prueba.
+	- El uso de attributes `[Fact]` para test individuales y `[Theory]` para test a los que se pueden pasar diferentes parámetros de entrada.
+	- Es el framework con mejor soporte y mas usado por la comunidad, incluso por la misma documentación oficial de Microsoft
+	- Permite la ejecución de pruebas en paralelo a nivel de método.
+	- Permite seleccionar que pruebas ejecutar (ejecución parcial).
+- Se selecciono Coverlet como la herramienta de cobertura más adecuada. Por ser gratuita y presentar la funcionalidad de la generación de reportes y resaltado del código según la cobertura. Comparándolo con Fine Code Coverage, esta tiene un uso e instalación mucho mas sencillo, sin embargo no permite la generación de reportes y el resaltado del código en el IDE, lo cual era fundamental para nuestra metodología de trabajo.
